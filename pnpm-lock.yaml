@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  import-meta-resolve: ^2.1.0
+
+dependencies:
+  import-meta-resolve: 2.1.0
+
+packages:
+
+  /import-meta-resolve/2.1.0:
+    resolution: {integrity: sha512-yG9pxkWJVTy4cmRsNWE3ztFdtFuYIV8G4N+cbCkO8b+qngkLyIUhxQFuZ0qJm67+0nUOxjMPT7nfksPKza1v2g==}
+    dev: false
