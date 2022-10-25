@@ -21,7 +21,7 @@ const syncFunctions = ['pkgJsonNeedsOptimization']
 for (const fn of syncFunctions) {
   module.exports[fn] = function () {
     throw new Error(
-      `"${fn}" is not supported in CJS build of \`vite-stuff\`.\nPlease use ESM or dynamic imports \`const { ${name} } = await import('vite-stuff')\`.`
+      `"${fn}" is not supported in CJS build of \`vite-framework-utils\`.\nPlease use ESM or dynamic imports \`const { ${name} } = await import('vite-framework-utils')\`.`
     )
   }
 }

@@ -1,5 +1,5 @@
 {
-	"name": "vite-stuff",
+	"name": "vite-framework-utils",
 	"type": "module",
 	"types": "./index.d.ts",
 	"exports": {
