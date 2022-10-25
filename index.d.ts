@@ -1,3 +1,5 @@
+import type { UserConfig } from 'vite'
+
 export interface CrawlFrameworkPkgsOptions {
   /**
    * Path to the root of the project that contains the `package.json`
@@ -7,6 +9,11 @@ export interface CrawlFrameworkPkgsOptions {
    * Whether we're currently in a Vite build
    */
   isBuild: boolean
+  /**
+   * Optional. If a Vite user config is passed, the output Vite config will respect the
+   * set `optimizeDeps` and `ssr` options so it doesn't override it
+   */
+  viteUserConfig?: UserConfig
   /**
    * Whether this is a framework package by checking it's `package.json`.
    * A framework package is one that exports special files that can't be processed

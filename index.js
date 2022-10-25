@@ -11,15 +11,50 @@ export async function crawlFrameworkPkgs(options) {
   })
 
   /** @type {string[]} */
-  const optimizeDepsInclude = []
+  let optimizeDepsInclude = []
   /** @type {string[]} */
-  const optimizeDepsExclude = []
+  let optimizeDepsExclude = []
   /** @type {string[]} */
-  const ssrNoExternal = []
+  let ssrNoExternal = []
   /** @type {string[]} */
-  const ssrExternal = []
+  let ssrExternal = []
 
   await crawl(pkgJsonPath, pkgJson)
+
+  // respect vite user config
+  if (options.viteUserConfig) {
+    // remove includes that are explicitly excluded in optimizeDeps
+    const _optimizeDepsExclude = options.viteUserConfig?.optimizeDeps?.exclude
+    if (_optimizeDepsExclude) {
+      optimizeDepsInclude = optimizeDepsInclude.filter((dep) => {
+        // https://github.com/vitejs/vite/blob/9f268dad2e82c0f1276b1098c0a28f1cf245aa50/packages/vite/src/node/utils.ts#L108-L113
+        return !_optimizeDepsExclude.some(
+          (id) => id === dep || dep.startsWith(`${id}/`)
+        )
+      })
+    }
+    // remove excludes that are explicitly included in optimizeDeps
+    const _optimizeDepsInclude = options.viteUserConfig?.optimizeDeps?.include
+    if (_optimizeDepsInclude) {
+      optimizeDepsExclude = optimizeDepsExclude.filter((dep) => {
+        return !optimizeDepsInclude.includes(dep)
+      })
+    }
+    // remove noExternals that are explicitly externalized
+    const _ssrExternal = options.viteUserConfig?.ssr?.external
+    ssrNoExternal = ssrNoExternal.filter((dep) => {
+      return !options.viteUserConfig?.ssr?.external?.includes(dep)
+    })
+    // remove externals that are explicitly noExternal
+    const _ssrNoExternal = options.viteUserConfig?.ssr?.noExternal
+    if (_ssrNoExternal === true) {
+      ssrExternal = []
+    } else if (_ssrNoExternal) {
+      ssrExternal = ssrExternal.filter((dep) => {
+        return !isMatch(dep, _ssrNoExternal)
+      })
+    }
+  }
 
   return {
     optimizeDeps: {
@@ -194,4 +229,18 @@ async function readJson(findDepPkgJsonPath) {
 async function importMetaResolve(specifier, parent) {
   const result = await resolve(specifier, pathToFileURL(parent).href)
   return fileURLToPath(result)
+}
+
+/**
+ * @param {string} target
+ * @param {string | RegExp | (string | RegExp)[]} pattern
+ */
+function isMatch(target, pattern) {
+  if (Array.isArray(pattern)) {
+    return pattern.some((p) => isMatch(target, p))
+  } else if (typeof pattern === 'string') {
+    return target === pattern
+  } else if (pattern instanceof RegExp) {
+    return pattern.test(target)
+  }
 }
