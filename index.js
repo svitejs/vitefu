@@ -3,8 +3,8 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { resolve } from 'import-meta-resolve'
 
-/** @type {import('.').crawlFrameworkDeps} */
-export async function crawlFrameworkDeps(options) {
+/** @type {import('.').crawlFrameworkPkgs} */
+export async function crawlFrameworkPkgs(options) {
   const pkgJsonPath = path.join(options.root, 'package.json')
   const pkgJson = await readJson(pkgJsonPath).catch((e) => {
     throw new Error(`Unable to read ${pkgJsonPath}`, { cause: e })
@@ -33,11 +33,13 @@ export async function crawlFrameworkDeps(options) {
   }
 
   /**
-   * crawl the package.json dependencies for framework deps. rules:
-   * 1. a framework dep should be `optimizeDeps.exclude` and `ssr.noExternal`.
-   * 2. the deps of the framework dep should be `optimizeDeps.include` and `ssr.external`
-   *    unless the dep is also a framework dep, in which case do no1 & no2 recusrively.
-   * 3. any non-framework dep that isn't imported by a framework dep can be skipped entirely.
+   * crawl the package.json dependencies for framework packages. rules:
+   * 1. a framework package should be `optimizeDeps.exclude` and `ssr.noExternal`.
+   * 2. the deps of the framework package should be `optimizeDeps.include` and `ssr.external`
+   *    unless the dep is also a framework package, in which case do no1 & no2 recursively.
+   * 3. any non-framework packages that aren't imported by a framework package can be skipped entirely.
+   * 4. a semi-framework package is like a framework package, except it isn't `optimizeDeps.exclude`,
+   *    but only applies `ssr.noExternal`.
    * @param {string} pkgJsonPath
    * @param {Record<string, any>} pkgJson
    * @param {string[]} [parentDepNames]
@@ -57,10 +59,10 @@ export async function crawlFrameworkDeps(options) {
         return false
       }
 
-      // true     : we still keep to crawl it's nested deps as they need to be deep included and
-      //            ssr externalized in dev mode.
-      // false    : we have no interest in non-framework deps, filter them out.
-      // undefined: "i don't know", keep and crawl
+      // true      : we still keep to crawl it's nested deps as they need to be deep included and
+      //             ssr externalized in dev mode.
+      // false     : we have no interest in non-framework deps, filter them out.
+      // undefined : same as "i don't know". keep and crawl.
       const isFrameworkPkg = options.isFrameworkPkgByName?.(dep)
       const isSemiFrameworkPkg = options.isSemiFrameworkPkgByName?.(dep)
       if (isFrameworkPkg) {
@@ -71,10 +73,12 @@ export async function crawlFrameworkDeps(options) {
         // pipeline, since nodejs can't support them.
         ssrNoExternal.push(dep)
       } else if (isSemiFrameworkPkg) {
-        // TODO: note
+        // semi-framework packages should do the same except for optimization exclude as they
+        // aren't needed to work (they don't contain raw framework components)
         ssrNoExternal.push(dep)
       }
 
+      // only those that are explictly false can skip crawling
       if (isFrameworkPkg === false || isSemiFrameworkPkg === false) {
         return false
       } else {
@@ -98,6 +102,7 @@ export async function crawlFrameworkDeps(options) {
       const isFrameworkPkg = options.isFrameworkPkgByJson?.(depPkgJson)
       const isSemiFrameworkPkg = options.isSemiFrameworkPkgByJson?.(depPkgJson)
       if (isFrameworkPkg || isSemiFrameworkPkg) {
+        // see explanation in filter condition above
         if (isFrameworkPkg) {
           optimizeDepsExclude.push(dep)
           ssrNoExternal.push(dep)
@@ -108,7 +113,7 @@ export async function crawlFrameworkDeps(options) {
       }
 
       // if we're crawling in a non-root state, the parent is 100% a framework package
-      // because of the above if block. in this case, if it's dep is a non-framework
+      // because of the above if block. in this case, if it's dep of a non-framework
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
@@ -141,7 +146,12 @@ export async function findDepPkgJsonPath(dep, parent) {
   } catch {
     return undefined
   }
-  let dir = path.dirname(resolved)
+  return findClosestPkgJsonPath(resolved)
+}
+
+/** @type {import('.').findClosestPkgJsonPath} */
+export async function findClosestPkgJsonPath(filePath) {
+  let dir = path.dirname(filePath)
   while (dir) {
     const pkg = path.join(dir, 'package.json')
     try {
