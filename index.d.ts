@@ -94,7 +94,7 @@ export declare function findDepPkgJsonPath(
  * Find the closest `package.json` path by walking `filePath` upwards
  */
 export declare function findClosestPkgJsonPath(
-  filePath: string
+  dir: string
 ): Promise<string | undefined>
 
 /**

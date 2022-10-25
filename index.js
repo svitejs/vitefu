@@ -185,8 +185,7 @@ export async function findDepPkgJsonPath(dep, parent) {
 }
 
 /** @type {import('.').findClosestPkgJsonPath} */
-export async function findClosestPkgJsonPath(filePath) {
-  let dir = path.dirname(filePath)
+export async function findClosestPkgJsonPath(dir) {
   while (dir) {
     const pkg = path.join(dir, 'package.json')
     try {
