@@ -155,7 +155,7 @@ export async function crawlFrameworkPkgs(options) {
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
-        if (pkgJsonNeedsOptimization(pkgJson)) {
+        if (pkgJsonNeedsOptimization(depPkgJson)) {
           optimizeDepsInclude.push(parentDepNames.concat(dep).join(' > '))
         }
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
