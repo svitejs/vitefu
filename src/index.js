@@ -5,7 +5,10 @@ import { resolve } from 'import-meta-resolve'
 
 /** @type {import('..').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
-  const pkgJsonPath = path.join(options.root, 'package.json')
+  const pkgJsonPath = await findClosestPkgJsonPath(options.root)
+  if (!pkgJsonPath) {
+    throw new Error(`Cannot find package.json from ${options.root}`)
+  }
   const pkgJson = await readJson(pkgJsonPath).catch((e) => {
     throw new Error(`Unable to read ${pkgJsonPath}`, { cause: e })
   })
