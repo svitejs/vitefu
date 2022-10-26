@@ -1,0 +1,14 @@
+{
+  "name": "@vitefu/dep-framework",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./utils": {
+      "import": "./utils.js"
+    }
+  }
+}

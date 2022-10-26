@@ -8,5 +8,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "strictNullChecks": true
-  }
+  },
+  "include": ["src", "tests"],
+  "exclude": ["tests/deps"]
 }

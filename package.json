@@ -16,6 +16,21 @@
 		"src",
 		"index.d.ts"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/svitejs/vitefu.git"
+	},
+	"bugs": {
+		"url": "https://github.com/svitejs/vitefu/issues"
+	},
+	"keywords": [
+		"vite",
+		"framework",
+		"utilities"
+	],
+	"scripts": {
+		"test": "uvu tests \".*\\.test\\.js\""
+	},
 	"dependencies": {
 		"import-meta-resolve": "^2.1.0"
 	},
@@ -28,6 +43,7 @@
 		}
 	},
 	"devDependencies": {
+		"uvu": "^0.5.6",
 		"vite": "^3.1.8"
 	}
 }

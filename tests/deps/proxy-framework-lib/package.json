@@ -1,0 +1,21 @@
+{
+  "name": "@vitefu/dep-proxy-framework-lib",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "framework": "./index.js",
+      "import": "./index.js"
+    }
+  },
+  "dependencies": {
+    "@vitefu/dep-full-framework-lib": "file:../full-framework-lib"
+  },
+  "peerDependencies": {
+    "@vitefu/dep-framework": "^0.0.1"
+  },
+  "devDependencies": {
+    "@vitefu/dep-framework": "file:../framework"
+  }
+}
