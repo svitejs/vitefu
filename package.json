@@ -31,6 +31,7 @@
 	"scripts": {
 		"test": "uvu tests \".*\\.test\\.js\""
 	},
+	"packageManager": "pnpm@7.14.0",
 	"dependencies": {
 		"import-meta-resolve": "^2.1.0"
 	},
