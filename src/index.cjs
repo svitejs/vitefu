@@ -10,7 +10,6 @@ const asyncFunctions = [
 
 for (const fn of asyncFunctions) {
   module.exports[fn] = function () {
-    // @ts-expect-error trust me
     return import('./index.js').then((mod) => mod[fn].apply(this, arguments))
   }
 }

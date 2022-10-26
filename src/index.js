@@ -3,7 +3,7 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { resolve } from 'import-meta-resolve'
 
-/** @type {import('.').crawlFrameworkPkgs} */
+/** @type {import('..').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
   const pkgJsonPath = path.join(options.root, 'package.json')
   const pkgJson = await readJson(pkgJsonPath).catch((e) => {
@@ -171,7 +171,7 @@ export async function crawlFrameworkPkgs(options) {
   }
 }
 
-/** @type {import('.').findDepPkgJsonPath} */
+/** @type {import('..').findDepPkgJsonPath} */
 export async function findDepPkgJsonPath(dep, parent) {
   // try simple dep/package.json import
   try {
@@ -187,7 +187,7 @@ export async function findDepPkgJsonPath(dep, parent) {
   return findClosestPkgJsonPath(resolved)
 }
 
-/** @type {import('.').findClosestPkgJsonPath} */
+/** @type {import('..').findClosestPkgJsonPath} */
 export async function findClosestPkgJsonPath(dir) {
   while (dir) {
     const pkg = path.join(dir, 'package.json')
@@ -202,7 +202,7 @@ export async function findClosestPkgJsonPath(dir) {
   return undefined
 }
 
-/** @type {import('.').pkgJsonNeedsOptimization} */
+/** @type {import('..').pkgJsonNeedsOptimization} */
 export function pkgJsonNeedsOptimization(pkgJson) {
   // only optimize if is cjs, using the below as heuristic
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/162

@@ -8,13 +8,12 @@
 	"exports": {
 		".": {
 			"types": "./index.d.ts",
-			"import": "./index.js",
-			"require": "./index.cjs"
+			"import": "./src/index.js",
+			"require": "./src/index.cjs"
 		}
 	},
 	"files": [
-		"index.js",
-		"index.cjs",
+		"src",
 		"index.d.ts"
 	],
 	"dependencies": {
