@@ -42,9 +42,11 @@ export async function crawlFrameworkPkgs(options) {
     }
     // remove noExternals that are explicitly externalized
     const _ssrExternal = options.viteUserConfig?.ssr?.external
-    ssrNoExternal = ssrNoExternal.filter((dep) => {
-      return !options.viteUserConfig?.ssr?.external?.includes(dep)
-    })
+    if (_ssrExternal) {
+      ssrNoExternal = ssrNoExternal.filter((dep) => {
+        return _ssrExternal.includes(dep)
+      })
+    }
     // remove externals that are explicitly noExternal
     const _ssrNoExternal = options.viteUserConfig?.ssr?.noExternal
     if (_ssrNoExternal === true) {
@@ -94,10 +96,6 @@ export async function crawlFrameworkPkgs(options) {
         return false
       }
 
-      // true      : we still keep to crawl it's nested deps as they need to be deep included and
-      //             ssr externalized in dev mode.
-      // false     : we have no interest in non-framework deps, filter them out.
-      // undefined : same as "i don't know". keep and crawl.
       const isFrameworkPkg = options.isFrameworkPkgByName?.(dep)
       const isSemiFrameworkPkg = options.isSemiFrameworkPkgByName?.(dep)
       if (isFrameworkPkg) {
@@ -113,10 +111,15 @@ export async function crawlFrameworkPkgs(options) {
         ssrNoExternal.push(dep)
       }
 
-      // only those that are explictly false can skip crawling
+      // only those that are explictly false can skip crawling since we don't need to do anything
+      // special for them
       if (isFrameworkPkg === false || isSemiFrameworkPkg === false) {
         return false
-      } else {
+      }
+      // if `true`, we need to crawl the nested deps to deep include and ssr externalize them in dev.
+      // if `undefined`, it's the same as "i don't know". we need to crawl and find the package.json
+      // to find out.
+      else {
         return true
       }
     })
@@ -164,7 +167,7 @@ export async function crawlFrameworkPkgs(options) {
       }
     })
 
-    await Promise.allSettled(promises)
+    await Promise.all(promises)
   }
 }
 
