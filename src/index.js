@@ -178,7 +178,7 @@ export async function crawlFrameworkPkgs(options) {
 export async function findDepPkgJsonPath(dep, parent) {
   // try simple dep/package.json import
   try {
-    return await importMetaResolve(path.join(dep, 'package.json'), parent)
+    return await importMetaResolve(path.posix.join(dep, 'package.json'), parent)
   } catch {}
   // try default import, then walk up the directory tree
   let resolved

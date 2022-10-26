@@ -10,21 +10,25 @@ test('crawlFrameworkPkgs (dev)', async () => {
   assert.equal(result, {
     optimizeDeps: {
       include: [
+        '@vitefu/dep-full-direct-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib'
       ],
       exclude: [
+        '@vitefu/dep-full-direct-framework-lib',
         '@vitefu/dep-full-framework-lib',
         '@vitefu/dep-proxy-framework-lib'
       ]
     },
     ssr: {
       noExternal: [
+        '@vitefu/dep-full-direct-framework-lib',
         '@vitefu/dep-full-framework-lib',
         '@vitefu/dep-proxy-framework-lib',
         '@vitefu/dep-semi-framework-lib'
       ],
       external: [
+        '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-framework'
@@ -38,16 +42,19 @@ test('crawlFrameworkPkgs (build)', async () => {
   assert.equal(result, {
     optimizeDeps: {
       include: [
+        '@vitefu/dep-full-direct-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib'
       ],
       exclude: [
+        '@vitefu/dep-full-direct-framework-lib',
         '@vitefu/dep-full-framework-lib',
         '@vitefu/dep-proxy-framework-lib'
       ]
     },
     ssr: {
       noExternal: [
+        '@vitefu/dep-full-direct-framework-lib',
         '@vitefu/dep-full-framework-lib',
         '@vitefu/dep-proxy-framework-lib',
         '@vitefu/dep-semi-framework-lib'

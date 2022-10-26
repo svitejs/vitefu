@@ -22,6 +22,12 @@ importers:
   tests/deps/framework:
     specifiers: {}
 
+  tests/deps/full-direct-framework-lib:
+    specifiers:
+      '@vitefu/dep-cjs-js-lib': file:../cjs-js-lib
+    dependencies:
+      '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
+
   tests/deps/full-framework-lib:
     specifiers:
       '@vitefu/dep-cjs-js-lib': file:../cjs-js-lib
@@ -46,12 +52,14 @@ importers:
   tests/projects/basic:
     specifiers:
       '@vitefu/dep-esm-js-lib': file:../../deps/esm-js-lib
+      '@vitefu/dep-full-direct-framework-lib': file:../../deps/full-direct-framework-lib
       '@vitefu/dep-full-framework-lib': file:../../deps/full-framework-lib
       '@vitefu/dep-proxy-framework-lib': file:../../deps/proxy-framework-lib
       '@vitefu/dep-semi-framework-lib': file:../../deps/semi-framework-lib
       '@vitejs/dep-framework': file:../../deps/framework
     dependencies:
       '@vitefu/dep-esm-js-lib': file:tests/deps/esm-js-lib
+      '@vitefu/dep-full-direct-framework-lib': file:tests/deps/full-direct-framework-lib
       '@vitefu/dep-full-framework-lib': file:tests/deps/full-framework-lib
       '@vitefu/dep-proxy-framework-lib': file:tests/deps/proxy-framework-lib
       '@vitefu/dep-semi-framework-lib': file:tests/deps/semi-framework-lib
@@ -448,6 +456,16 @@ packages:
     version: 0.0.1
     dependencies:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
+
+  file:tests/deps/full-direct-framework-lib:
+    resolution: {directory: tests/deps/full-direct-framework-lib, type: directory}
+    name: '@vitefu/dep-full-direct-framework-lib'
+    version: 0.0.1
+    peerDependencies:
+      '@vitefu/dep-framework': ^0.0.1
+    dependencies:
+      '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
+    dev: false
 
   file:tests/deps/full-framework-lib:
     resolution: {directory: tests/deps/full-framework-lib, type: directory}
