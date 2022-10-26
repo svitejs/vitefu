@@ -1,4 +1,4 @@
-# vite-framework-utils
+# vitefu
 
 Utilities for building frameworks with Vite.
 
