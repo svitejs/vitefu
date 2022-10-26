@@ -164,7 +164,7 @@ export async function crawlFrameworkPkgs(options) {
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
         // we do in dev only as build cannot access deep external packages in strict
         // dependency installations, such as pnpm.
-        if (!options.isBuild) {
+        if (!options.isBuild && !ssrExternal.includes(dep)) {
           ssrExternal.push(dep)
         }
       }

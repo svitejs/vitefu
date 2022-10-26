@@ -29,8 +29,6 @@ test('crawlFrameworkPkgs (dev)', async () => {
       ],
       external: [
         '@vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-framework'
       ]
     }
