@@ -1,7 +1,5 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath, pathToFileURL } from 'node:url'
-import { resolve } from 'import-meta-resolve'
 
 /** @type {import('..').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
@@ -176,22 +174,27 @@ export async function crawlFrameworkPkgs(options) {
 
 /** @type {import('..').findDepPkgJsonPath} */
 export async function findDepPkgJsonPath(dep, parent) {
-  // try simple dep/package.json import
-  try {
-    return await importMetaResolve(path.posix.join(dep, 'package.json'), parent)
-  } catch {}
-  // try default import, then walk up the directory tree
-  let resolved
-  try {
-    resolved = await importMetaResolve(dep, parent)
-  } catch {
-    return undefined
+  let root = await findClosestPkgJsonPath(parent)
+  if (!root) return undefined
+  root = path.dirname(root)
+  while (root) {
+    const pkg = path.join(root, 'node_modules', dep, 'package.json')
+    try {
+      await fs.access(pkg)
+      return await fs.realpath(pkg)
+    } catch {}
+    const nextRoot = path.dirname(root)
+    if (nextRoot === root) break
+    root = nextRoot
   }
-  return findClosestPkgJsonPath(resolved)
+  return undefined
 }
 
 /** @type {import('..').findClosestPkgJsonPath} */
 export async function findClosestPkgJsonPath(dir) {
+  if (dir.endsWith('package.json')) {
+    dir = path.dirname(dir)
+  }
   while (dir) {
     const pkg = path.join(dir, 'package.json')
     try {
@@ -225,15 +228,6 @@ export function pkgJsonNeedsOptimization(pkgJson) {
  */
 async function readJson(findDepPkgJsonPath) {
   return JSON.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
-}
-
-/**
- * @param {string} specifier
- * @param {string} parent
- */
-async function importMetaResolve(specifier, parent) {
-  const result = await resolve(specifier, pathToFileURL(parent).href)
-  return fileURLToPath(result)
 }
 
 /**
