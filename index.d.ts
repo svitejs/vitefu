@@ -83,7 +83,9 @@ export declare function crawlFrameworkPkgs(
 ): Promise<CrawlFrameworkPkgsResult>
 
 /**
- * Find the `package.json` of a dep, starting from the parent, e.g. `process.cwd()`
+ * Find the `package.json` of a dep, starting from the parent, e.g. `process.cwd()`.
+ * A simplified implementation of https://nodejs.org/api/esm.html#resolver-algorithm-specification
+ * (PACKAGE_RESOLVE) for `package.json` specifically.
  */
 export declare function findDepPkgJsonPath(
   dep: string,

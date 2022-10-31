@@ -4,11 +4,8 @@ importers:
 
   .:
     specifiers:
-      import-meta-resolve: ^2.1.0
       uvu: ^0.5.6
       vite: ^3.1.8
-    dependencies:
-      import-meta-resolve: 2.1.0
     devDependencies:
       uvu: 0.5.6
       vite: 3.1.8
@@ -323,10 +320,6 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
-
-  /import-meta-resolve/2.1.0:
-    resolution: {integrity: sha512-yG9pxkWJVTy4cmRsNWE3ztFdtFuYIV8G4N+cbCkO8b+qngkLyIUhxQFuZ0qJm67+0nUOxjMPT7nfksPKza1v2g==}
-    dev: false
 
   /is-core-module/2.11.0:
     resolution: {integrity: sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==}
