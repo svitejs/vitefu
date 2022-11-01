@@ -1,6 +1,15 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
+/** @type {import('pnpapi')} */
+let pnp
+if (process.versions.pnp) {
+  try {
+    const { createRequire } = (await import('module')).default
+    pnp = createRequire(import.meta.url)('pnpapi')
+  } catch {}
+}
+
 /** @type {import('..').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
   const pkgJsonPath = await findClosestPkgJsonPath(options.root)
@@ -174,6 +183,12 @@ export async function crawlFrameworkPkgs(options) {
 
 /** @type {import('..').findDepPkgJsonPath} */
 export async function findDepPkgJsonPath(dep, parent) {
+  if (pnp) {
+    const depRoot = pnp.resolveToUnqualified(dep, parent)
+    if (!depRoot) return undefined
+    return path.join(depRoot, 'package.json')
+  }
+
   let root = await findClosestPkgJsonPath(parent)
   if (!root) return undefined
   root = path.dirname(root)
