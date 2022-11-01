@@ -31,6 +31,10 @@
 	"scripts": {
 		"test": "uvu tests \".*\\.test\\.js\""
 	},
+	"workspaces": [
+		"tests/deps/*",
+		"tests/projects/*"
+	],
 	"peerDependencies": {
 		"vite": "^3.0.0"
 	},
