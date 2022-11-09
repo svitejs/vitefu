@@ -28,8 +28,18 @@ importers:
   tests/deps/full-framework-lib:
     specifiers:
       '@vitefu/dep-cjs-js-lib': file:../cjs-js-lib
+      '@vitefu/dep-implicit-entry-cjs-lib': file:../implicit-entry-cjs-lib
+      '@vitefu/dep-no-entry-lib': file:../no-entry-lib
     dependencies:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
+      '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
+
+  tests/deps/implicit-entry-cjs-lib:
+    specifiers: {}
+
+  tests/deps/no-entry-lib:
+    specifiers: {}
 
   tests/deps/proxy-framework-lib:
     specifiers:
@@ -475,6 +485,20 @@ packages:
     dependencies:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
       '@vitefu/dep-framework': file:tests/deps/framework
+      '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
+    dev: false
+
+  file:tests/deps/implicit-entry-cjs-lib:
+    resolution: {directory: tests/deps/implicit-entry-cjs-lib, type: directory}
+    name: '@vitefu/dep-implicit-cjs-lib'
+    version: 0.0.1
+    dev: false
+
+  file:tests/deps/no-entry-lib:
+    resolution: {directory: tests/deps/no-entry-lib, type: directory}
+    name: '@vitefu/dep-no-entry-lib'
+    version: 0.0.1
     dev: false
 
   file:tests/deps/proxy-framework-lib_xng2sgcu4u3rzr73unoh4hinhq:

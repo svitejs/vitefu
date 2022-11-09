@@ -5,7 +5,8 @@
 const asyncFunctions = [
   'crawlFrameworkPkgs',
   'findDepPkgJsonPath',
-  'findClosestPkgJsonPath'
+  'findClosestPkgJsonPath',
+  'pkgJsonNeedsOptimization',
 ]
 
 for (const fn of asyncFunctions) {
@@ -15,7 +16,7 @@ for (const fn of asyncFunctions) {
 }
 
 // throw sync functions
-const syncFunctions = ['pkgJsonNeedsOptimization']
+const syncFunctions = []
 
 for (const fn of syncFunctions) {
   module.exports[fn] = function () {

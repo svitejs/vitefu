@@ -12,7 +12,9 @@ test('crawlFrameworkPkgs (dev)', async () => {
       include: [
         '@vitefu/dep-full-direct-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib'
+        '@vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib',
+        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
+        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib'
       ],
       exclude: [
         '@vitefu/dep-full-direct-framework-lib',
@@ -29,7 +31,9 @@ test('crawlFrameworkPkgs (dev)', async () => {
       ],
       external: [
         '@vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-framework'
+        '@vitefu/dep-framework',
+        '@vitefu/dep-implicit-entry-cjs-lib',
+        '@vitefu/dep-no-entry-lib'
       ]
     }
   })
@@ -42,7 +46,9 @@ test('crawlFrameworkPkgs (build)', async () => {
       include: [
         '@vitefu/dep-full-direct-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib'
+        '@vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib',
+        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
+        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib',
       ],
       exclude: [
         '@vitefu/dep-full-direct-framework-lib',
