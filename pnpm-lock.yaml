@@ -29,18 +29,20 @@ importers:
     specifiers:
       '@vitefu/dep-cjs-js-lib': file:../cjs-js-lib
       '@vitefu/dep-implicit-entry-cjs-lib': file:../implicit-entry-cjs-lib
-      '@vitefu/dep-no-deep-optimize': file:../no-deep-optimize
+      '@vitefu/dep-no-deep-optimize-lib': file:../no-deep-optimize-lib
       '@vitefu/dep-no-entry-lib': file:../no-entry-lib
+      '@vitefu/dep-should-no-external-lib': file:../should-no-external-lib
     dependencies:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
       '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
-      '@vitefu/dep-no-deep-optimize': file:tests/deps/no-deep-optimize
+      '@vitefu/dep-no-deep-optimize-lib': file:tests/deps/no-deep-optimize-lib
       '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
+      '@vitefu/dep-should-no-external-lib': file:tests/deps/should-no-external-lib
 
   tests/deps/implicit-entry-cjs-lib:
     specifiers: {}
 
-  tests/deps/no-deep-optimize:
+  tests/deps/no-deep-optimize-lib:
     specifiers: {}
 
   tests/deps/no-entry-lib:
@@ -60,6 +62,9 @@ importers:
       '@vitefu/dep-framework': file:../framework
     dependencies:
       '@vitefu/dep-framework': file:tests/deps/framework
+
+  tests/deps/should-no-external-lib:
+    specifiers: {}
 
   tests/projects/basic:
     specifiers:
@@ -498,7 +503,9 @@ packages:
       '@vitefu/dep-framework': file:tests/deps/framework
       '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
       '@vitefu/dep-no-deep-optimize': file:tests/deps/no-deep-optimize
+      '@vitefu/dep-no-deep-optimize-lib': file:tests/deps/no-deep-optimize-lib
       '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
+      '@vitefu/dep-should-no-external-lib': file:tests/deps/should-no-external-lib
     dev: false
 
   file:tests/deps/implicit-entry-cjs-lib:
@@ -510,6 +517,12 @@ packages:
   file:tests/deps/no-deep-optimize:
     resolution: {directory: tests/deps/no-deep-optimize, type: directory}
     name: '@vitefu/dep-no-deep-optimize'
+    version: 0.0.1
+    dev: false
+
+  file:tests/deps/no-deep-optimize-lib:
+    resolution: {directory: tests/deps/no-deep-optimize-lib, type: directory}
+    name: '@vitefu/dep-no-deep-optimize-lib'
     version: 0.0.1
     dev: false
 
@@ -537,4 +550,10 @@ packages:
     version: 0.0.1
     dependencies:
       '@vitefu/dep-framework': file:tests/deps/framework
+    dev: false
+
+  file:tests/deps/should-no-external-lib:
+    resolution: {directory: tests/deps/should-no-external-lib, type: directory}
+    name: '@vitefu/dep-sshould-no-external-lib'
+    version: 0.0.1
     dev: false
