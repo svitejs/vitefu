@@ -37,17 +37,16 @@ export async function crawlFrameworkPkgs(options) {
     const _optimizeDepsExclude = options.viteUserConfig?.optimizeDeps?.exclude
     if (_optimizeDepsExclude) {
       optimizeDepsInclude = optimizeDepsInclude.filter((dep) => {
-        // https://github.com/vitejs/vite/blob/9f268dad2e82c0f1276b1098c0a28f1cf245aa50/packages/vite/src/node/utils.ts#L108-L113
-        return !_optimizeDepsExclude.some(
-          (id) => id === dep || dep.startsWith(`${id}/`)
-        )
+        const lastArrow = dep.lastIndexOf('>')
+        dep = lastArrow === -1 ? dep : dep.slice(lastArrow + 1).trim()
+        return !_optimizeDepsExclude.includes(dep)
       })
     }
     // remove excludes that are explicitly included in optimizeDeps
     const _optimizeDepsInclude = options.viteUserConfig?.optimizeDeps?.include
     if (_optimizeDepsInclude) {
       optimizeDepsExclude = optimizeDepsExclude.filter((dep) => {
-        return !optimizeDepsInclude.includes(dep)
+        return !_optimizeDepsInclude.includes(dep)
       })
     }
     // remove noExternals that are explicitly externalized
