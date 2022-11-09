@@ -79,19 +79,6 @@ export async function crawlFrameworkPkgs(options) {
   }
 
   /**
-   * @param {Parameters<NonNullable<import('..').CrawlFrameworkPkgsOptions['pkgNeedsDeepOptimization']>>[0]} pkgData
-   */
-  async function needsOptimization(pkgData) {
-    if (options.pkgNeedsDeepOptimization) {
-      const result = options.pkgNeedsDeepOptimization(pkgData)
-      if (typeof result === 'boolean') {
-        return result
-      }
-    }
-    return await pkgNeedsOptimization(pkgData.pkgJson, pkgData.pkgJsonPath)
-  }
-
-  /**
    * crawl the package.json dependencies for framework packages. rules:
    * 1. a framework package should be `optimizeDeps.exclude` and `ssr.noExternal`.
    * 2. the deps of the framework package should be `optimizeDeps.include` and `ssr.external`
@@ -177,14 +164,7 @@ export async function crawlFrameworkPkgs(options) {
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
-        if (
-          await needsOptimization({
-            pkgName: dep,
-            pkgJson: depPkgJson,
-            pkgJsonPath: depPkgJsonPath,
-            parentPkgNames: parentDepNames
-          })
-        ) {
+        if (await pkgNeedsOptimization(depPkgJson, depPkgJsonPath)) {
           optimizeDepsInclude.push(parentDepNames.concat(dep).join(' > '))
         }
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
