@@ -165,7 +165,7 @@ export async function crawlFrameworkPkgs(options) {
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
-        if (await pkgJsonNeedsOptimization(depPkgJson, path.dirname(depPkgJsonPath))) {
+        if (await pkgJsonNeedsOptimization(depPkgJson, depPkgJsonPath)) {
           optimizeDepsInclude.push(parentDepNames.concat(dep).join(' > '))
         }
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
@@ -223,47 +223,26 @@ export async function findClosestPkgJsonPath(dir) {
   return undefined
 }
 
-/** Check the `pkgPath` have one of the files below, can be used as the implicit entry point:
- * - index.js
- * - index.cjs
- * - index.mjs
- * @param {string} pkgPath
- */
-async function canResolveImplicitEntryPackage(pkgPath) {
-  const POSSIBLE_FILENAMES = ["index.js", "index.cjs", "index.mjs"];
-  try {
-    const result = await Promise.all(
-      POSSIBLE_FILENAMES.map((name) => path.join(pkgPath, name)).map(async (path) => {
-        try {
-          await fs.access(path)
-          return true
-        } catch {
-          return false
-        }
-      })
-    )
-    return result.reduce((p, c) => p || c)
-  } catch {
-    return false
-  }
-}
-
 /** @type {import('..').pkgJsonNeedsOptimization} */
 export async function pkgJsonNeedsOptimization(pkgJson, pkgPath) {
   // only optimize if is cjs, using the below as heuristic
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/162
   if (pkgJson.module || pkgJson.exports) return false
-  // has implicit index.js entrypoint, prebundle
-  // see https://github.com/sveltejs/vite-plugin-svelte/issues/281
-  if (!pkgJson.main) {
-    // ensure the package actually have an entry point
-    // see https://github.com/solidjs/vite-plugin-solid/issues/70#issuecomment-1306488154
-    return (await canResolveImplicitEntryPackage(pkgPath))
-  }
-  // ensure entry is js so vite can prebundle it
+  // if have main, ensure entry is js so vite can prebundle it
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/233
-  const entryExt = path.extname(pkgJson.main)
-  return !entryExt || entryExt === '.js' || entryExt === '.cjs'
+  if (pkgJson.main) {
+    const entryExt = path.extname(pkgJson.main)
+    return !entryExt || entryExt === '.js' || entryExt === '.cjs'
+  }
+  // check if has implicit index.js entrypoint to prebundle
+  // see https://github.com/sveltejs/vite-plugin-svelte/issues/281
+  // see https://github.com/solidjs/vite-plugin-solid/issues/70#issuecomment-1306488154
+  try {
+    await fs.access(path.join(path.dirname(pkgPath), 'index.js'))
+    return true
+  } catch {
+    return false
+  }
 }
 
 /**
