@@ -5,10 +5,10 @@ importers:
   .:
     specifiers:
       uvu: ^0.5.6
-      vite: ^3.1.8
+      vite: ^3.2.3
     devDependencies:
       uvu: 0.5.6
-      vite: 3.1.8
+      vite: 3.2.3
 
   tests/deps/cjs-js-lib:
     specifiers: {}
@@ -29,13 +29,18 @@ importers:
     specifiers:
       '@vitefu/dep-cjs-js-lib': file:../cjs-js-lib
       '@vitefu/dep-implicit-entry-cjs-lib': file:../implicit-entry-cjs-lib
+      '@vitefu/dep-no-deep-optimize': file:../no-deep-optimize
       '@vitefu/dep-no-entry-lib': file:../no-entry-lib
     dependencies:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
       '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-deep-optimize': file:tests/deps/no-deep-optimize
       '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
 
   tests/deps/implicit-entry-cjs-lib:
+    specifiers: {}
+
+  tests/deps/no-deep-optimize:
     specifiers: {}
 
   tests/deps/no-entry-lib:
@@ -382,8 +387,8 @@ packages:
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
 
-  /rollup/2.78.1:
-    resolution: {integrity: sha512-VeeCgtGi4P+o9hIg+xz4qQpRl6R401LWEXBmxYKOV4zlF82lyhgh2hTZnheFUbANE8l2A41F458iwj2vEYaXJg==}
+  /rollup/2.79.1:
+    resolution: {integrity: sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -418,21 +423,27 @@ packages:
       sade: 1.8.1
     dev: true
 
-  /vite/3.1.8:
-    resolution: {integrity: sha512-m7jJe3nufUbuOfotkntGFupinL/fmuTNuQmiVE7cH2IZMuf4UbfbGYMUT3jVWgGYuRVLY9j8NnrRqgw5rr5QTg==}
+  /vite/3.2.3:
+    resolution: {integrity: sha512-h8jl1TZ76eGs3o2dIBSsvXDLb1m/Ec1iej8ZMdz+PsaFUsftZeWe2CZOI3qogEsMNaywc17gu0q6cQDzh/weCQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
+      '@types/node': '>= 14'
       less: '*'
       sass: '*'
       stylus: '*'
+      sugarss: '*'
       terser: ^5.4.0
     peerDependenciesMeta:
+      '@types/node':
+        optional: true
       less:
         optional: true
       sass:
         optional: true
       stylus:
+        optional: true
+      sugarss:
         optional: true
       terser:
         optional: true
@@ -440,7 +451,7 @@ packages:
       esbuild: 0.15.12
       postcss: 8.4.18
       resolve: 1.22.1
-      rollup: 2.78.1
+      rollup: 2.79.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -486,12 +497,19 @@ packages:
       '@vitefu/dep-cjs-js-lib': file:tests/deps/cjs-js-lib
       '@vitefu/dep-framework': file:tests/deps/framework
       '@vitefu/dep-implicit-entry-cjs-lib': file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-deep-optimize': file:tests/deps/no-deep-optimize
       '@vitefu/dep-no-entry-lib': file:tests/deps/no-entry-lib
     dev: false
 
   file:tests/deps/implicit-entry-cjs-lib:
     resolution: {directory: tests/deps/implicit-entry-cjs-lib, type: directory}
-    name: '@vitefu/dep-implicit-cjs-lib'
+    name: '@vitefu/dep-implicit-entry-cjs-lib'
+    version: 0.0.1
+    dev: false
+
+  file:tests/deps/no-deep-optimize:
+    resolution: {directory: tests/deps/no-deep-optimize, type: directory}
+    name: '@vitefu/dep-no-deep-optimize'
     version: 0.0.1
     dev: false
 
