@@ -102,7 +102,7 @@ export declare function findClosestPkgJsonPath(
 /**
  * Check if a package needs to be optimized by Vite, aka if it's CJS-only
  */
-export declare function pkgJsonNeedsOptimization(
+export declare function pkgNeedsOptimization(
   pkgJson: Record<string, any>,
-  pkgPath: string
+  pkgJsonPath: string
 ): Promise<boolean>

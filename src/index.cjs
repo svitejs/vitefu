@@ -6,7 +6,7 @@ const asyncFunctions = [
   'crawlFrameworkPkgs',
   'findDepPkgJsonPath',
   'findClosestPkgJsonPath',
-  'pkgJsonNeedsOptimization'
+  'pkgNeedsOptimization'
 ]
 
 for (const fn of asyncFunctions) {

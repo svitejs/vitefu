@@ -165,7 +165,7 @@ export async function crawlFrameworkPkgs(options) {
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
-        if (await pkgJsonNeedsOptimization(depPkgJson, depPkgJsonPath)) {
+        if (await pkgNeedsOptimization(depPkgJson, depPkgJsonPath)) {
           optimizeDepsInclude.push(parentDepNames.concat(dep).join(' > '))
         }
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
@@ -223,8 +223,8 @@ export async function findClosestPkgJsonPath(dir) {
   return undefined
 }
 
-/** @type {import('..').pkgJsonNeedsOptimization} */
-export async function pkgJsonNeedsOptimization(pkgJson, pkgPath) {
+/** @type {import('..').pkgNeedsOptimization} */
+export async function pkgNeedsOptimization(pkgJson, pkgPath) {
   // only optimize if is cjs, using the below as heuristic
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/162
   if (pkgJson.module || pkgJson.exports) return false
