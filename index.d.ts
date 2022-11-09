@@ -61,6 +61,27 @@ export interface CrawlFrameworkPkgsOptions {
    * ```
    */
   isSemiFrameworkPkgByName?: (pkgName: string) => boolean | undefined
+  /**
+   * Whether a package should be deeply optimized, this is needed as excluded packages
+   * may have CJS deps that don't work in Vite, which results in `optimizeDeps.include: ['framework-pkg > cjs-dep']`
+   * in the returned object. By default it uses the `pkgNeedsOptimization` function.
+   *
+   * Sometimes the function may bring false positives, this option lets you customize it.
+   * Return a `boolean` or `undefined` (fallback to `pkgNeedsOptimization`).
+   *
+   * @example
+   * ```ts
+   * if (NO_OPTIMIZATION_PACKAGES.includes(pkgName)) {
+   *   return false
+   * }
+   * ```
+   */
+  pkgNeedsDeepOptimization?: (pkgData: {
+    pkgName: string
+    pkgJson: Record<string, any>
+    pkgJsonPath: string
+    parentPkgNames: string[]
+  }) => boolean | undefined
 }
 
 export interface CrawlFrameworkPkgsResult {

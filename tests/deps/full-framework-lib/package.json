@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@vitefu/dep-cjs-js-lib": "file:../cjs-js-lib",
-    "@vitefu/dep-no-entry-lib": "file:../no-entry-lib",
-    "@vitefu/dep-implicit-entry-cjs-lib": "file:../implicit-entry-cjs-lib"
+    "@vitefu/dep-implicit-entry-cjs-lib": "file:../implicit-entry-cjs-lib",
+    "@vitefu/dep-no-deep-optimize": "file:../no-deep-optimize",
+    "@vitefu/dep-no-entry-lib": "file:../no-entry-lib"
   },
   "peerDependencies": {
     "@vitefu/dep-framework": "^0.0.1"

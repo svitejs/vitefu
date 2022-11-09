@@ -33,6 +33,7 @@ test('crawlFrameworkPkgs (dev)', async () => {
         '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-framework',
         '@vitefu/dep-implicit-entry-cjs-lib',
+        '@vitefu/dep-no-deep-optimize',
         '@vitefu/dep-no-entry-lib'
       ]
     }
@@ -48,7 +49,7 @@ test('crawlFrameworkPkgs (build)', async () => {
         '@vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
         '@vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib',
         '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-cjs-js-lib',
-        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib',
+        '@vitefu/dep-proxy-framework-lib > @vitefu/dep-full-framework-lib > @vitefu/dep-implicit-entry-cjs-lib'
       ],
       exclude: [
         '@vitefu/dep-full-direct-framework-lib',
@@ -85,6 +86,11 @@ async function callCrawlFrameworkPkgs(isBuild) {
         pkgJson.dependencies?.['@vitefu/dep-framework'] ||
         pkgJson.peerDependencies?.['@vitefu/dep-framework']
       )
+    },
+    pkgNeedsDeepOptimization({ pkgName }) {
+      if (['@vitefu/dep-no-deep-optimize'].includes(pkgName)) {
+        return false
+      }
     }
   })
   // sort for deep equal comparison

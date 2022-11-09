@@ -80,6 +80,19 @@ export async function crawlFrameworkPkgs(options) {
   }
 
   /**
+   * @param {Parameters<NonNullable<import('..').CrawlFrameworkPkgsOptions['pkgNeedsDeepOptimization']>>[0]} pkgData
+   */
+  async function needsOptimization(pkgData) {
+    if (options.pkgNeedsDeepOptimization) {
+      const result = options.pkgNeedsDeepOptimization(pkgData)
+      if (typeof result === 'boolean') {
+        return result
+      }
+    }
+    return await pkgNeedsOptimization(pkgData.pkgJson, pkgData.pkgJsonPath)
+  }
+
+  /**
    * crawl the package.json dependencies for framework packages. rules:
    * 1. a framework package should be `optimizeDeps.exclude` and `ssr.noExternal`.
    * 2. the deps of the framework package should be `optimizeDeps.include` and `ssr.external`
@@ -165,7 +178,14 @@ export async function crawlFrameworkPkgs(options) {
       // package, handle special cases for them.
       if (!isRoot) {
         // deep include it if it's a CJS package, so it becomes ESM and vite is happy.
-        if (await pkgNeedsOptimization(depPkgJson, depPkgJsonPath)) {
+        if (
+          await needsOptimization({
+            pkgName: dep,
+            pkgJson: depPkgJson,
+            pkgJsonPath: depPkgJsonPath,
+            parentPkgNames: parentDepNames
+          })
+        ) {
           optimizeDepsInclude.push(parentDepNames.concat(dep).join(' > '))
         }
         // also externalize it in dev so it doesn't trip vite's SSR transformation.
@@ -224,7 +244,7 @@ export async function findClosestPkgJsonPath(dir) {
 }
 
 /** @type {import('..').pkgNeedsOptimization} */
-export async function pkgNeedsOptimization(pkgJson, pkgPath) {
+export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
   // only optimize if is cjs, using the below as heuristic
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/162
   if (pkgJson.module || pkgJson.exports) return false
@@ -238,7 +258,7 @@ export async function pkgNeedsOptimization(pkgJson, pkgPath) {
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/281
   // see https://github.com/solidjs/vite-plugin-solid/issues/70#issuecomment-1306488154
   try {
-    await fs.access(path.join(path.dirname(pkgPath), 'index.js'))
+    await fs.access(path.join(path.dirname(pkgJsonPath), 'index.js'))
     return true
   } catch {
     return false
