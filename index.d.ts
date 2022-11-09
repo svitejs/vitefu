@@ -1,4 +1,4 @@
-import type { UserConfig } from 'vite'
+import type { DepOptimizationOptions, SSROptions, UserConfig } from 'vite'
 
 export interface CrawlFrameworkPkgsOptions {
   /**
@@ -106,3 +106,23 @@ export declare function pkgNeedsOptimization(
   pkgJson: Record<string, any>,
   pkgJsonPath: string
 ): Promise<boolean>
+
+export declare function isDepExcluded(
+  dep: string,
+  optimizeDepsExclude: NonNullable<DepOptimizationOptions['exclude']>
+): boolean
+
+export declare function isDepIncluded(
+  dep: string,
+  optimizeDepsInclude: NonNullable<DepOptimizationOptions['include']>
+): boolean
+
+export declare function isDepNoExternaled(
+  dep: string,
+  ssrNoExternal: NonNullable<SSROptions['noExternal']>
+): boolean
+
+export declare function isDepExternaled(
+  dep: string,
+  ssrExternal: NonNullable<SSROptions['external']>
+): boolean

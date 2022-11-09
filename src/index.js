@@ -1,5 +1,11 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import {
+  isDepIncluded,
+  isDepExcluded,
+  isDepNoExternaled,
+  isDepExternaled
+} from './sync.cjs'
 
 /** @type {import('pnpapi')} */
 let pnp
@@ -9,6 +15,8 @@ if (process.versions.pnp) {
     pnp = createRequire(import.meta.url)('pnpapi')
   } catch {}
 }
+
+export { isDepIncluded, isDepExcluded, isDepNoExternaled, isDepExternaled }
 
 /** @type {import('..').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
@@ -36,34 +44,30 @@ export async function crawlFrameworkPkgs(options) {
     // remove includes that are explicitly excluded in optimizeDeps
     const _optimizeDepsExclude = options.viteUserConfig?.optimizeDeps?.exclude
     if (_optimizeDepsExclude) {
-      optimizeDepsInclude = optimizeDepsInclude.filter((dep) => {
-        const lastArrow = dep.lastIndexOf('>')
-        dep = lastArrow === -1 ? dep : dep.slice(lastArrow + 1).trim()
-        return !_optimizeDepsExclude.includes(dep)
-      })
+      optimizeDepsInclude = optimizeDepsInclude.filter(
+        (dep) => !isDepExcluded(dep, _optimizeDepsExclude)
+      )
     }
     // remove excludes that are explicitly included in optimizeDeps
     const _optimizeDepsInclude = options.viteUserConfig?.optimizeDeps?.include
     if (_optimizeDepsInclude) {
-      optimizeDepsExclude = optimizeDepsExclude.filter((dep) => {
-        return !_optimizeDepsInclude.includes(dep)
-      })
+      optimizeDepsExclude = optimizeDepsExclude.filter(
+        (dep) => !isDepIncluded(dep, _optimizeDepsInclude)
+      )
     }
     // remove noExternals that are explicitly externalized
     const _ssrExternal = options.viteUserConfig?.ssr?.external
     if (_ssrExternal) {
-      ssrNoExternal = ssrNoExternal.filter((dep) => {
-        return _ssrExternal.includes(dep)
-      })
+      ssrNoExternal = ssrNoExternal.filter(
+        (dep) => !isDepExternaled(dep, _ssrExternal)
+      )
     }
     // remove externals that are explicitly noExternal
     const _ssrNoExternal = options.viteUserConfig?.ssr?.noExternal
-    if (_ssrNoExternal === true) {
-      ssrExternal = []
-    } else if (_ssrNoExternal) {
-      ssrExternal = ssrExternal.filter((dep) => {
-        return !isMatch(dep, _ssrNoExternal)
-      })
+    if (_ssrNoExternal) {
+      ssrExternal = ssrExternal.filter(
+        (dep) => !isDepNoExternaled(dep, _ssrNoExternal)
+      )
     }
   }
 
@@ -250,18 +254,4 @@ export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
  */
 async function readJson(findDepPkgJsonPath) {
   return JSON.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
-}
-
-/**
- * @param {string} target
- * @param {string | RegExp | (string | RegExp)[]} pattern
- */
-function isMatch(target, pattern) {
-  if (Array.isArray(pattern)) {
-    return pattern.some((p) => isMatch(target, p))
-  } else if (typeof pattern === 'string') {
-    return target === pattern
-  } else if (pattern instanceof RegExp) {
-    return pattern.test(target)
-  }
 }
