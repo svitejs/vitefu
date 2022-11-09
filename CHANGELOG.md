@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- BREAKING: Rename `pkgJsonNeedsOptimization` to `pkgNeedsOptimization` with new parameters and async for correctness
+- Prevent deep optimize packages with no exports and `index.js` file
+- Correctly respect Vite user config passed
+
 ## 0.1.1 (2022-11-01)
 
 - Resolve packages without root entry ([#1](https://github.com/svitejs/vitefu/issues/1))
