@@ -33,7 +33,7 @@ test('crawlFrameworkPkgs (dev)', async () => {
         '@vitefu/dep-cjs-js-lib',
         '@vitefu/dep-framework',
         '@vitefu/dep-implicit-entry-cjs-lib',
-        '@vitefu/dep-no-deep-optimize',
+        '@vitefu/dep-no-deep-optimize-lib',
         '@vitefu/dep-no-entry-lib'
       ]
     }
@@ -78,6 +78,14 @@ async function callCrawlFrameworkPkgs(isBuild) {
   const result = await crawlFrameworkPkgs({
     root,
     isBuild,
+    viteUserConfig: {
+      optimizeDeps: {
+        exclude: ['@vitefu/dep-no-deep-optimize-lib']
+      },
+      ssr: {
+        noExternal: [/@vitefu\/dep-should-no-external-lib/]
+      }
+    },
     isFrameworkPkgByJson: (pkgJson) => {
       return exportsHasFrameworkField(pkgJson.exports || {})
     },
@@ -86,11 +94,6 @@ async function callCrawlFrameworkPkgs(isBuild) {
         pkgJson.dependencies?.['@vitefu/dep-framework'] ||
         pkgJson.peerDependencies?.['@vitefu/dep-framework']
       )
-    },
-    pkgNeedsDeepOptimization({ pkgName }) {
-      if (['@vitefu/dep-no-deep-optimize'].includes(pkgName)) {
-        return false
-      }
     }
   })
   // sort for deep equal comparison
