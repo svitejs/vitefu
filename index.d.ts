@@ -107,21 +107,65 @@ export declare function pkgNeedsOptimization(
   pkgJsonPath: string
 ): Promise<boolean>
 
+/**
+ * Check if a dependency is part of an existing `optimizeDeps.exclude` config
+ * @param dep Dependency to be included
+ * @param optimizeDepsExclude Existing `optimizeDeps.exclude` config
+ * @example
+ * ```ts
+ * optimizeDeps: {
+ *   include: includesToAdd.filter((dep) => !isDepExcluded(dep, existingExclude))
+ * }
+ * ```
+ */
 export declare function isDepExcluded(
   dep: string,
   optimizeDepsExclude: NonNullable<DepOptimizationOptions['exclude']>
 ): boolean
 
+/**
+ * Check if a dependency is part of an existing `optimizeDeps.include` config
+ * @param dep Dependency to be excluded
+ * @param optimizeDepsInclude Existing `optimizeDeps.include` config
+ * @example
+ * ```ts
+ * optimizeDeps: {
+ *   exclude: excludesToAdd.filter((dep) => !isDepIncluded(dep, existingInclude))
+ * }
+ * ```
+ */
 export declare function isDepIncluded(
   dep: string,
   optimizeDepsInclude: NonNullable<DepOptimizationOptions['include']>
 ): boolean
 
+/**
+ * Check if a dependency is part of an existing `ssr.noExternal` config
+ * @param dep Dependency to be excluded
+ * @param ssrNoExternal Existing `ssr.noExternal` config
+ * @example
+ * ```ts
+ * ssr: {
+ *   external: externalsToAdd.filter((dep) => !isDepNoExternal(dep, existingNoExternal))
+ * }
+ * ```
+ */
 export declare function isDepNoExternaled(
   dep: string,
   ssrNoExternal: NonNullable<SSROptions['noExternal']>
 ): boolean
 
+/**
+ * Check if a dependency is part of an existing `ssr.external` config
+ * @param dep Dependency to be noExternaled
+ * @param ssrExternal Existing `ssr.external` config
+ * @example
+ * ```ts
+ * ssr: {
+ *   noExternal: noExternalsToAdd.filter((dep) => !isDepExternal(dep, existingExternal))
+ * }
+ * ```
+ */
 export declare function isDepExternaled(
   dep: string,
   ssrExternal: NonNullable<SSROptions['external']>
