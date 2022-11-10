@@ -2,7 +2,7 @@
 
 /** @type {import('..').isDepIncluded} */
 function isDepIncluded(dep, optimizeDepsInclude) {
-  return optimizeDepsInclude.includes(dep)
+  return optimizeDepsInclude.some((id) => parseIncludeStr(id) === dep)
 }
 
 /** @type {import('..').isDepExcluded} */

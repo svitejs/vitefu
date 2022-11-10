@@ -11,6 +11,9 @@ const test1 = suite('isDepIncluded')
 test1('return true if dep is included', () => {
   assert.ok(isDepIncluded('foo', ['foo']))
 })
+test1('return true if dep is deep included', () => {
+  assert.ok(isDepIncluded('bar', ['foo > bar']))
+})
 test1('return false if dep is not included', () => {
   assert.not.ok(isDepIncluded('bar', ['foo']))
 })
