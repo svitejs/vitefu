@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 (2022-11-12)
+
+- Don't throw error if `package.json` not found in Deno
+
 ## 0.2.0 (2022-11-10)
 
 - BREAKING: Rename `pkgJsonNeedsOptimization` to `pkgNeedsOptimization` with new parameters and async for correctness

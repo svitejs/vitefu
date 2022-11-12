@@ -22,7 +22,15 @@ export { isDepIncluded, isDepExcluded, isDepNoExternaled, isDepExternaled }
 export async function crawlFrameworkPkgs(options) {
   const pkgJsonPath = await findClosestPkgJsonPath(options.root)
   if (!pkgJsonPath) {
-    throw new Error(`Cannot find package.json from ${options.root}`)
+    // @ts-expect-error don't throw in deno as package.json is not required
+    if (typeof Deno !== 'undefined') {
+      return {
+        optimizeDeps: { include: [], exclude: [] },
+        ssr: { noExternal: [], external: [] }
+      }
+    } else {
+      throw new Error(`Cannot find package.json from ${options.root}`)
+    }
   }
   const pkgJson = await readJson(pkgJsonPath).catch((e) => {
     throw new Error(`Unable to read ${pkgJsonPath}`, { cause: e })
