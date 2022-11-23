@@ -55,6 +55,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup workspaces
+        run: cat package.json | jq '.workspaces =  ["tests/deps/*","tests/projects/*"]' | tee package.json
+
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -73,6 +76,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup workspaces
+        run: cat package.json | jq '.workspaces =  ["tests/deps/*","tests/projects/*"]' | tee package.json
 
       - name: Use yarn 3
         run: cat package.json | jq '.packageManager = "yarn@3.2.4"' | tee package.json
