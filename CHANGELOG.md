@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.2 (2022-11-23)
 
 - `findClosestPkgJsonPath` only returns `package.json` file, not directory
 - Support `predicate` parameter for `findClosestPkgJsonPath` to filter paths
