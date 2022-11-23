@@ -93,10 +93,16 @@ export declare function findDepPkgJsonPath(
 ): Promise<string | undefined>
 
 /**
- * Find the closest `package.json` path by walking `filePath` upwards
+ * Find the closest `package.json` path by walking `dir` upwards.
+ *
+ * Pass a function to `predicate` to check if the current `package.json` is the
+ * one you're looking for. For example, finding `package.json` that has the
+ * `name` field only. Throwing inside the `predicate` is safe and acts the same
+ *  as returning false.
  */
 export declare function findClosestPkgJsonPath(
-  dir: string
+  dir: string,
+  predicate?: (pkgJsonPath: string) => boolean | Promise<boolean>
 ): Promise<string | undefined>
 
 /**

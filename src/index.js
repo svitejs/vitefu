@@ -217,7 +217,7 @@ export async function findDepPkgJsonPath(dep, parent) {
 }
 
 /** @type {import('..').findClosestPkgJsonPath} */
-export async function findClosestPkgJsonPath(dir) {
+export async function findClosestPkgJsonPath(dir, predicate = undefined) {
   if (dir.endsWith('package.json')) {
     dir = path.dirname(dir)
   }
@@ -225,7 +225,7 @@ export async function findClosestPkgJsonPath(dir) {
     const pkg = path.join(dir, 'package.json')
     try {
       const stat = await fs.stat(pkg)
-      if (stat.isFile()) {
+      if (stat.isFile() && (!predicate || (await predicate(pkg)))) {
         return pkg
       }
     } catch {}

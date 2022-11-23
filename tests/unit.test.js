@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
@@ -70,11 +71,30 @@ test4('return false if dep is not externaled', () => {
 test4.run()
 
 const test5 = suite('findClosestPkgJsonPath')
-test5('return package.json file path', async () => {
+test5('return package.json', async () => {
+  const start = fileURLToPath(new URL('.', import.meta.url))
+  const actual = await findClosestPkgJsonPath(start)
+  const expected = fileURLToPath(new URL('../package.json', import.meta.url))
+  assert.equal(actual, expected)
+})
+test5('ignore package.json directory name', async () => {
   const start = fileURLToPath(
     new URL('./projects/package.json/empty.js', import.meta.url)
   )
   const actual = await findClosestPkgJsonPath(start)
+  const expected = fileURLToPath(new URL('../package.json', import.meta.url))
+  assert.equal(actual, expected)
+})
+test5('respect predicate', async () => {
+  const start = fileURLToPath(
+    new URL('./projects/basic/package.json', import.meta.url)
+  )
+  const actual = await findClosestPkgJsonPath(start, async (pkgJsonPath) => {
+    console.log(pkgJsonPath)
+    const content = await fs.readFile(pkgJsonPath, 'utf8')
+    const json = JSON.parse(content)
+    return json.name === 'vitefu'
+  })
   const expected = fileURLToPath(new URL('../package.json', import.meta.url))
   assert.equal(actual, expected)
 })
