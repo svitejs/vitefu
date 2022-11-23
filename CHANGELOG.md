@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- `findClosestPkgJsonPath` only returns `package.json` file, not directory
+
 ## 0.2.1 (2022-11-12)
 
 - Don't throw error if `package.json` not found in Deno

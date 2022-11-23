@@ -1,6 +1,8 @@
+import { fileURLToPath } from 'node:url'
 import { suite } from 'uvu'
 import * as assert from 'uvu/assert'
 import {
+  findClosestPkgJsonPath,
   isDepIncluded,
   isDepExcluded,
   isDepNoExternaled,
@@ -66,3 +68,14 @@ test4('return false if dep is not externaled', () => {
   assert.not.ok(isDepExternaled('bar', ['foo']))
 })
 test4.run()
+
+const test5 = suite('findClosestPkgJsonPath')
+test5('return package.json file path', async () => {
+  const start = fileURLToPath(
+    new URL('./projects/package.json/empty.js', import.meta.url)
+  )
+  const actual = await findClosestPkgJsonPath(start)
+  const expected = fileURLToPath(new URL('../package.json', import.meta.url))
+  assert.equal(actual, expected)
+})
+test5.run()

@@ -224,8 +224,10 @@ export async function findClosestPkgJsonPath(dir) {
   while (dir) {
     const pkg = path.join(dir, 'package.json')
     try {
-      await fs.access(pkg)
-      return pkg
+      const stat = await fs.stat(pkg)
+      if (stat.isFile()) {
+        return pkg
+      }
     } catch {}
     const nextDir = path.dirname(dir)
     if (nextDir === dir) break
