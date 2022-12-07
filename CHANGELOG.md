@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Allow Vite 4 peer dependency
+
 ## 0.2.2 (2022-11-23)
 
 - `findClosestPkgJsonPath` only returns `package.json` file, not directory
