@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.3 (2022-12-09)
 
 - Allow Vite 4 peer dependency
 
