@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import fsSync from 'node:fs'
 import path from 'node:path'
 import {
   isDepIncluded,
@@ -207,7 +208,8 @@ export async function findDepPkgJsonPath(dep, parent) {
     const pkg = path.join(root, 'node_modules', dep, 'package.json')
     try {
       await fs.access(pkg)
-      return await fs.realpath(pkg)
+	  // use 'node:fs' version to match 'vite:resolve'
+      return fsSync.realpathSync(pkg)
     } catch {}
     const nextRoot = path.dirname(root)
     if (nextRoot === root) break
