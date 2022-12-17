@@ -208,7 +208,8 @@ export async function findDepPkgJsonPath(dep, parent) {
     const pkg = path.join(root, 'node_modules', dep, 'package.json')
     try {
       await fs.access(pkg)
-	  // use 'node:fs' version to match 'vite:resolve'
+      // use 'node:fs' version to match 'vite:resolve' and avoid realpath.native quirk
+      // https://github.com/sveltejs/vite-plugin-svelte/issues/525#issuecomment-1355551264
       return fsSync.realpathSync(pkg)
     } catch {}
     const nextRoot = path.dirname(root)
