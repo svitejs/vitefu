@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.5 (2023-10-13)
+
+- Align `findDepPkgJsonPath` implementation with Vite
+- Allow Vite 5 peer dependency
+
 ## 0.2.4 (2022-12-17)
 
 - Fix `findDepPkgJsonPath` usage in Windows mapped network drives
