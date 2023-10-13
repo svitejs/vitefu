@@ -90,7 +90,6 @@ test5('respect predicate', async () => {
     new URL('./projects/basic/package.json', import.meta.url)
   )
   const actual = await findClosestPkgJsonPath(start, async (pkgJsonPath) => {
-    console.log(pkgJsonPath)
     const content = await fs.readFile(pkgJsonPath, 'utf8')
     const json = JSON.parse(content)
     return json.name === 'vitefu'
