@@ -1,11 +1,11 @@
 // contains synchronous API only so it can be exported as CJS and ESM
 
-/** @type {import('..').isDepIncluded} */
+/** @type {import('./index.d.ts').isDepIncluded} */
 function isDepIncluded(dep, optimizeDepsInclude) {
   return optimizeDepsInclude.some((id) => parseIncludeStr(id) === dep)
 }
 
-/** @type {import('..').isDepExcluded} */
+/** @type {import('./index.d.ts').isDepExcluded} */
 function isDepExcluded(dep, optimizeDepsExclude) {
   dep = parseIncludeStr(dep)
   return optimizeDepsExclude.some(
@@ -13,7 +13,7 @@ function isDepExcluded(dep, optimizeDepsExclude) {
   )
 }
 
-/** @type {import('..').isDepNoExternaled} */
+/** @type {import('./index.d.ts').isDepNoExternaled} */
 function isDepNoExternaled(dep, ssrNoExternal) {
   if (ssrNoExternal === true) {
     return true
@@ -22,7 +22,7 @@ function isDepNoExternaled(dep, ssrNoExternal) {
   }
 }
 
-/** @type {import('..').isDepExternaled} */
+/** @type {import('./index.d.ts').isDepExternaled} */
 function isDepExternaled(dep, ssrExternal) {
   return ssrExternal.includes(dep)
 }

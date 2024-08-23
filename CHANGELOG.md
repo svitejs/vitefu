@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Remove top-level await to allow future compatibility to `require` ESM code
+- Export proper ESM and CJS types
+
 ## 0.2.5 (2023-10-13)
 
 - Align `findDepPkgJsonPath` implementation with Vite
