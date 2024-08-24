@@ -46,6 +46,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - name: create yarn lock
+        if: startsWith(${{matrix.pm}},'yarn')
+        run: touch yarn.lock
       - run: corepack enable
       - name: Install dependencies
         run: corepack ${{matrix.pm}} install
