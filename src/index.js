@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import fsSync from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import {
   isDepIncluded,
@@ -12,14 +13,13 @@ import {
 let pnp
 if (process.versions.pnp) {
   try {
-    const { createRequire } = (await import('module')).default
     pnp = createRequire(import.meta.url)('pnpapi')
   } catch {}
 }
 
 export { isDepIncluded, isDepExcluded, isDepNoExternaled, isDepExternaled }
 
-/** @type {import('..').crawlFrameworkPkgs} */
+/** @type {import('./index.d.ts').crawlFrameworkPkgs} */
 export async function crawlFrameworkPkgs(options) {
   const pkgJsonPath = await findClosestPkgJsonPath(options.root)
   if (!pkgJsonPath) {
@@ -193,7 +193,7 @@ export async function crawlFrameworkPkgs(options) {
   }
 }
 
-/** @type {import('..').findDepPkgJsonPath} */
+/** @type {import('./index.d.ts').findDepPkgJsonPath} */
 export async function findDepPkgJsonPath(dep, parent) {
   if (pnp) {
     try {
@@ -221,7 +221,7 @@ export async function findDepPkgJsonPath(dep, parent) {
   return undefined
 }
 
-/** @type {import('..').findClosestPkgJsonPath} */
+/** @type {import('./index.d.ts').findClosestPkgJsonPath} */
 export async function findClosestPkgJsonPath(dir, predicate = undefined) {
   if (dir.endsWith('package.json')) {
     dir = path.dirname(dir)
@@ -241,7 +241,7 @@ export async function findClosestPkgJsonPath(dir, predicate = undefined) {
   return undefined
 }
 
-/** @type {import('..').pkgNeedsOptimization} */
+/** @type {import('./index.d.ts').pkgNeedsOptimization} */
 export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
   // only optimize if is cjs, using the below as heuristic
   // see https://github.com/sveltejs/vite-plugin-svelte/issues/162
