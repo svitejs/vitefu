@@ -8,12 +8,18 @@ importers:
 
   .:
     devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+      '@types/pnpapi':
+        specifier: ^0.0.5
+        version: 0.0.5
       uvu:
         specifier: ^0.5.6
         version: 0.5.6
       vite:
         specifier: ^3.2.3
-        version: 3.2.10
+        version: 3.2.10(@types/node@14.18.63)
 
   tests/deps/cjs-js-lib: {}
 
@@ -107,6 +113,12 @@ packages:
     engines: {node: '>=12'}
     cpu: [loong64]
     os: [linux]
+
+  '@types/node@14.18.63':
+    resolution: {integrity: sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==}
+
+  '@types/pnpapi@0.0.5':
+    resolution: {integrity: sha512-tjymquatF9seZGE3GcN1barqNqpmyEpqIN0rBKTcoZWwgDC0SgBp5LFqCRJE6YhzXA7TjpXbpTdcL5A8cwyryw==}
 
   '@vitefu/dep-cjs-js-lib@file:tests/deps/cjs-js-lib':
     resolution: {directory: tests/deps/cjs-js-lib, type: directory}
@@ -378,6 +390,10 @@ snapshots:
   '@esbuild/linux-loong64@0.15.18':
     optional: true
 
+  '@types/node@14.18.63': {}
+
+  '@types/pnpapi@0.0.5': {}
+
   '@vitefu/dep-cjs-js-lib@file:tests/deps/cjs-js-lib': {}
 
   '@vitefu/dep-esm-js-lib@file:tests/deps/esm-js-lib': {}
@@ -558,11 +574,12 @@ snapshots:
       kleur: 4.1.5
       sade: 1.8.1
 
-  vite@3.2.10:
+  vite@3.2.10(@types/node@14.18.63):
     dependencies:
       esbuild: 0.15.18
       postcss: 8.4.41
       resolve: 1.22.8
       rollup: 2.79.1
     optionalDependencies:
+      '@types/node': 14.18.63
       fsevents: 2.3.3
