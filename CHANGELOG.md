@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleeased
+## 1.0.1 (2024-09-02)
 
 - Fix ESM types export
 
