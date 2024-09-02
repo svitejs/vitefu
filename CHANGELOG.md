@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.2 (2024-09-02)
 
 - Duplicate CJS types to correct ESM types export
 
