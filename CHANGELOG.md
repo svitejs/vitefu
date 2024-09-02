@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleeased
+
+- Fix ESM types export
+
 ## 1.0.0 (2024-08-26)
 
 The library is now v1! This release is mostly ceremonial as the API has been stable for a while without any plans to change it. As such, there are no breaking changes.
