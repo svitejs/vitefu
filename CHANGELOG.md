@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 (2024-10-14)
+
+- Allow Vite 6 beta peer dependency (experimental support)
+
 ## 1.0.2 (2024-09-02)
 
 - Duplicate CJS types to correct ESM types export
