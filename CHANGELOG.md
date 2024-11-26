@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 (2024-11-26)
+
+- Allow Vite 6 peer dependency (remove beta support)
+
 ## 1.0.3 (2024-10-14)
 
 - Allow Vite 6 beta peer dependency (experimental support)
