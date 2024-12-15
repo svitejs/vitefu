@@ -1,0 +1,18 @@
+{
+	// tests support for package.json5 in pnpm projects
+	name: "@vitefu/project-pnpmer",
+	version: "0.0.1",
+	private: true,
+	type: 'module',
+	dependencies: {
+    "@vitefu/dep-esm-js-lib": "file:../../deps/esm-js-lib",
+    "@vitefu/dep-framework": "file:../../deps/framework",
+    "@vitefu/dep-full-direct-framework-lib": "file:../../deps/full-direct-framework-lib",
+    "@vitefu/dep-full-framework-lib": "file:../../deps/full-framework-lib",
+    "@vitefu/dep-proxy-framework-lib": "file:../../deps/proxy-framework-lib",
+    "@vitefu/dep-semi-framework-lib": "file:../../deps/semi-framework-lib"
+	},
+  devDependencies: {
+    uvu: "^0.5.6"
+  }
+}

@@ -2,6 +2,8 @@ import fs from 'node:fs/promises'
 import fsSync from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
+import JSON5 from 'json5'
+import YAML from 'yaml'
 import {
   isDepIncluded,
   isDepExcluded,
@@ -33,7 +35,7 @@ export async function crawlFrameworkPkgs(options) {
       throw new Error(`Cannot find package.json from ${options.root}`)
     }
   }
-  const pkgJson = await readJson(pkgJsonPath).catch((e) => {
+  const pkgJson = await readPkgJson(pkgJsonPath).catch((e) => {
     throw new Error(`Unable to read ${pkgJsonPath}`, { cause: e })
   })
 
@@ -149,7 +151,7 @@ export async function crawlFrameworkPkgs(options) {
     const promises = deps.map(async (dep) => {
       const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath)
       if (!depPkgJsonPath) return
-      const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
+      const depPkgJson = await readPkgJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
 
       // fast path if this dep is already a framework dep based on the filter condition above
@@ -223,17 +225,21 @@ export async function findDepPkgJsonPath(dep, parent) {
 
 /** @type {import('./index.d.ts').findClosestPkgJsonPath} */
 export async function findClosestPkgJsonPath(dir, predicate = undefined) {
+  const extensions = ['json', 'json5', 'yaml']
+
   if (dir.endsWith('package.json')) {
     dir = path.dirname(dir)
   }
   while (dir) {
-    const pkg = path.join(dir, 'package.json')
-    try {
-      const stat = await fs.stat(pkg)
-      if (stat.isFile() && (!predicate || (await predicate(pkg)))) {
-        return pkg
-      }
-    } catch {}
+    for (const ext of extensions) {
+      const pkg = path.join(dir, `package.${ext}`)
+      try {
+        const stat = await fs.stat(pkg)
+        if (stat.isFile() && (!predicate || (await predicate(pkg)))) {
+          return pkg
+        }
+      } catch {}
+    }
     const nextDir = path.dirname(dir)
     if (nextDir === dir) break
     dir = nextDir
@@ -267,6 +273,12 @@ export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
  * @param {string} findDepPkgJsonPath
  * @returns {Promise<Record<string, any>>}
  */
-async function readJson(findDepPkgJsonPath) {
+async function readPkgJson(findDepPkgJsonPath) {
+  if (findDepPkgJsonPath.endsWith('.yaml')) {
+    return YAML.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
+  } else if (findDepPkgJsonPath.endsWith('.json5')) {
+    return JSON5.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
+  }
+
   return JSON.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
 }

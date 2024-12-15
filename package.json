@@ -46,5 +46,9 @@
 	"workspaces": [
 		"tests/deps/*",
 		"tests/projects/*"
-	]
+	],
+	"dependencies": {
+		"json5": "^2.2.3",
+		"yaml": "^2.6.1"
+	}
 }
