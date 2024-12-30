@@ -4,7 +4,7 @@ Utilities for building frameworks with Vite.
 
 ## Usage
 
-See [index.d.ts](./index.d.ts).
+See [src/index.d.ts](./src/index.d.ts).
 
 ## License
 
