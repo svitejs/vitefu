@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5 (2025-01-02)
+
+- Don't require `package.json` to exist for `crawlFrameworkPkgs` ([#16](https://github.com/svitejs/vitefu/pull/16))
+
 ## 1.0.4 (2024-11-26)
 
 - Allow Vite 6 peer dependency (remove beta support)
