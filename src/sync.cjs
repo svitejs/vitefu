@@ -62,5 +62,5 @@ module.exports = {
   isDepIncluded,
   isDepExcluded,
   isDepNoExternaled,
-  isDepExternaled,
+  isDepExternaled
 }
