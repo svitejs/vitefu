@@ -24,7 +24,12 @@ function isDepNoExternaled(dep, ssrNoExternal) {
 
 /** @type {import('./index.d.ts').isDepExternaled} */
 function isDepExternaled(dep, ssrExternal) {
-  return ssrExternal.includes(dep)
+  // @ts-expect-error can be true in Vite 6
+  if (ssrExternal === true) {
+    return true
+  } else {
+    return ssrExternal.includes(dep)
+  }
 }
 
 /**

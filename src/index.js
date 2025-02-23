@@ -62,7 +62,11 @@ export async function crawlFrameworkPkgs(options) {
     }
     // remove noExternals that are explicitly externalized
     const _ssrExternal = options.viteUserConfig?.ssr?.external
-    if (_ssrExternal) {
+    // @ts-expect-error can be true in Vite 6
+    // We want to skip this if it's true, because they're not exactly
+    // explicitly externalized. It just means that they also want to
+    // externalized linked dependencies by default.
+    if (_ssrExternal && _ssrExternal !== true) {
       ssrNoExternal = ssrNoExternal.filter(
         (dep) => !isDepExternaled(dep, _ssrExternal)
       )
