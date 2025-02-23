@@ -24,9 +24,13 @@ function isDepNoExternaled(dep, ssrNoExternal) {
 
 /** @type {import('./index.d.ts').isDepExternaled} */
 function isDepExternaled(dep, ssrExternal) {
+  // If `ssrExternal` is `true`, it just means that all linked
+  // dependencies should also be externalized by default. It doesn't
+  // mean that a dependency is being explicitly externalized. So we
+  // return `false` in this case.
   // @ts-expect-error can be true in Vite 6
   if (ssrExternal === true) {
-    return true
+    return false
   } else {
     return ssrExternal.includes(dep)
   }
@@ -58,5 +62,5 @@ module.exports = {
   isDepIncluded,
   isDepExcluded,
   isDepNoExternaled,
-  isDepExternaled
+  isDepExternaled,
 }
