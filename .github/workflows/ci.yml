@@ -29,11 +29,11 @@ jobs:
       matrix:
         node: [20]
         os: [ubuntu-latest, macos-latest, windows-latest]
-        pm: ["pnpm@9"]
+        pm: ["pnpm@10"]
         include:
           - node: 22
             os: ubuntu-latest
-            pm: "pnpm@9"
+            pm: "pnpm@10"
           - node: 22
             os: ubuntu-latest
             pm: "yarn@4"
@@ -45,6 +45,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      # Install latest corepack to workaround https://github.com/nodejs/corepack/issues/612
+      # This can be removed when we only test against Node 22.14 and above
+      - run: npm install --global corepack@latest
       - run: corepack enable
       - name: Install dependencies
         run: corepack ${{matrix.pm}} install
