@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6 (2025-02-24)
+
+- Handle `ssr.external: true` Vite config when calling `crawlFrameworkPkgs` and `isDepExternaled` ([#19](https://github.com/svitejs/vitefu/pull/19))
+
 ## 1.0.5 (2025-01-02)
 
 - Don't require `package.json` to exist for `crawlFrameworkPkgs` ([#16](https://github.com/svitejs/vitefu/pull/16))
