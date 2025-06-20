@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 (2025-06-20)
+
+- Allow Vite 7 peer dependency ([#21](https://github.com/svitejs/vitefu/pull/21))
+
 ## 1.0.6 (2025-02-24)
 
 - Handle `ssr.external: true` Vite config when calling `crawlFrameworkPkgs` and `isDepExternaled` ([#19](https://github.com/svitejs/vitefu/pull/19))
