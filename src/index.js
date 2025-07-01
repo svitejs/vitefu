@@ -17,6 +17,7 @@ if (process.versions.pnp) {
   try {
     pnp = createRequire(import.meta.url)('pnpapi')
     // returns a set of physical locators https://yarnpkg.com/advanced/pnpapi#getdependencytreeroots
+    // @ts-ignore unfortunately doesn't exist in the `@types` package
     pnpWorkspaceLocators = pnp.getDependencyTreeRoots()
   } catch {}
 }
