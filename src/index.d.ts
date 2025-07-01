@@ -98,7 +98,8 @@ export declare function crawlFrameworkPkgs(
  */
 export declare function findDepPkgJsonPath(
   dep: string,
-  parent: string
+  parent: string,
+  workspaceRoot?: string
 ): Promise<string | undefined>
 
 /**

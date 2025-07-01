@@ -11,9 +11,13 @@ import {
 
 /** @type {import('pnpapi')} */
 let pnp
+/** @type {Array<{ name: string; reference: string; }>} */
+let pnpWorkspaceLocators
 if (process.versions.pnp) {
   try {
     pnp = createRequire(import.meta.url)('pnpapi')
+    // returns a set of physical locators https://yarnpkg.com/advanced/pnpapi#getdependencytreeroots
+    pnpWorkspaceLocators = pnp.getDependencyTreeRoots()
   } catch {}
 }
 
@@ -101,7 +105,7 @@ export async function crawlFrameworkPkgs(options) {
    */
   async function crawl(pkgJsonPath, pkgJson, parentDepNames = []) {
     const isRoot = parentDepNames.length === 0
-    const crawlDevDependencies = isRoot || isPrivateWorkspacePackage(pkgJsonPath,pkgJson,options.workspaceRoot)
+    const crawlDevDependencies = isRoot || isPrivateWorkspacePackage(pkgJsonPath, pkgJson, options.workspaceRoot)
     /** @type {string[]} */
     let deps = [
       ...Object.keys(pkgJson.dependencies || {}),
@@ -143,7 +147,7 @@ export async function crawlFrameworkPkgs(options) {
     })
 
     const promises = deps.map(async (dep) => {
-      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath)
+      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath, options.workspaceRoot)
       if (!depPkgJsonPath) return
       const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
@@ -190,8 +194,19 @@ export async function crawlFrameworkPkgs(options) {
 }
 
 /** @type {import('./index.d.ts').findDepPkgJsonPath} */
-export async function findDepPkgJsonPath(dep, parent) {
+export async function findDepPkgJsonPath(dep, parent, workspaceRoot) {
   if (pnp) {
+    // if we're in a workspace and the dep is a workspace dep, 
+    // then we'll try to resolve to it's real location
+    if (workspaceRoot) {
+      const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
+      if (locator) {
+        // relative to the workspace
+        const [, relativePath] = locator.reference.split("workspace:")
+        return path.resolve(workspaceRoot, relativePath, 'package.json')
+      }
+    }
+
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)
       if (!depRoot) return undefined
