@@ -148,7 +148,7 @@ export async function crawlFrameworkPkgs(options) {
     })
 
     const promises = deps.map(async (dep) => {
-      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath, options.workspaceRoot)
+      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath)
       if (!depPkgJsonPath) return
       const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
@@ -195,17 +195,14 @@ export async function crawlFrameworkPkgs(options) {
 }
 
 /** @type {import('./index.d.ts').findDepPkgJsonPath} */
-export async function findDepPkgJsonPath(dep, parent, workspaceRoot) {
+export async function findDepPkgJsonPath(dep, parent) {
   if (pnp) {
     // if we're in a workspace and the dep is a workspace dep, 
     // then we'll try to resolve to it's real location
-    if (workspaceRoot) {
-      const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
-      if (locator) {
-        // relative to the workspace
-        const [, relativePath] = locator.reference.split('workspace:')
-        return path.resolve(workspaceRoot, relativePath, 'package.json')
-      }
+    const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
+    if (locator) {
+      const pkgPath = pnp.getPackageInformation(locator).packageLocation
+      return path.resolve(pkgPath, 'package.json')
     }
 
     try {
