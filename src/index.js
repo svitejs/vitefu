@@ -203,7 +203,7 @@ export async function findDepPkgJsonPath(dep, parent, workspaceRoot) {
       const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
       if (locator) {
         // relative to the workspace
-        const [, relativePath] = locator.reference.split("workspace:")
+        const [, relativePath] = locator.reference.split('workspace:')
         return path.resolve(workspaceRoot, relativePath, 'package.json')
       }
     }

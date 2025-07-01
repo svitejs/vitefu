@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
-import {crawlFrameworkPkgs} from '../../../src/index.js'
+import { crawlFrameworkPkgs } from '../../../src/index.js'
 
 const workspaceRoot = fileURLToPath(new URL('../../../', import.meta.url)).replace(/\/$/,'')
 const root = fileURLToPath(new URL('./packages/workspace-app', import.meta.url)).replace(/\/$/,'')
