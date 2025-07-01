@@ -1,0 +1,5 @@
+<framework>
+export default function renderComponent() {
+  return 'Hello World'
+}
+</framework>

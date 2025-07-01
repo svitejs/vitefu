@@ -9,6 +9,15 @@ export interface CrawlFrameworkPkgsOptions {
    * Whether we're currently in a Vite build
    */
   isBuild: boolean
+
+  /**
+   * Path to workspace root of the project
+   *
+   * setting this enables crawling devDependencies of private packages inside the workspace that
+   * you can use `import {searchForWorkspaceRoot} from 'vite'` to find it.
+   */
+  workspaceRoot?: string
+
   /**
    * Optional. If a Vite user config is passed, the output Vite config will respect the
    * set `optimizeDeps` and `ssr` options so it doesn't override it

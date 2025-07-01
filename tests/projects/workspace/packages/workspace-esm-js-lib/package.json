@@ -1,0 +1,11 @@
+{
+  "name": "@vitefu/workspace-dep-esm-js-lib",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    }
+  }
+}

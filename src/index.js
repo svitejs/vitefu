@@ -101,11 +101,11 @@ export async function crawlFrameworkPkgs(options) {
    */
   async function crawl(pkgJsonPath, pkgJson, parentDepNames = []) {
     const isRoot = parentDepNames.length === 0
-
+    const crawlDevDependencies = isRoot || isPrivateWorkspacePackage(pkgJsonPath,pkgJson,options.workspaceRoot)
     /** @type {string[]} */
     let deps = [
       ...Object.keys(pkgJson.dependencies || {}),
-      ...(isRoot ? Object.keys(pkgJson.devDependencies || {}) : [])
+      ...((crawlDevDependencies) ? Object.keys(pkgJson.devDependencies || {}) : [])
     ]
 
     deps = deps.filter((dep) => {
@@ -265,4 +265,18 @@ export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
  */
 async function readJson(findDepPkgJsonPath) {
   return JSON.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
+}
+
+/**
+ *
+ * @param {string} pkgJsonPath
+ * @param {Record<string,any>} pkgJson
+ * @param {string} [workspaceRoot]
+ * @returns {boolean}
+ */
+function isPrivateWorkspacePackage(pkgJsonPath,pkgJson,workspaceRoot = undefined) {
+  return !!workspaceRoot
+      && pkgJson.private
+      && pkgJsonPath.startsWith(workspaceRoot)
+      && !pkgJsonPath.match(/[/\\]node_modules[/\\]/)
 }
