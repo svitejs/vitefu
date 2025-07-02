@@ -1,2 +1,0 @@
-# unignore yarn lock, we need it here so that yarn thinks this is the root and not the top level
-!yarn.lock
