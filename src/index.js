@@ -151,7 +151,7 @@ export async function crawlFrameworkPkgs(options) {
     })
 
     const promises = deps.map(async (dep) => {
-      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath, !!options.workspaceRoot)
+      const depPkgJsonPath = await _findDepPkgJsonPath(dep, pkgJsonPath, !!options.workspaceRoot)
       if (!depPkgJsonPath) return
       const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
@@ -196,20 +196,33 @@ export async function crawlFrameworkPkgs(options) {
     await Promise.all(promises)
   }
 }
-
 /** @type {import('./index.d.ts').findDepPkgJsonPath} */
-export async function findDepPkgJsonPath(dep, parent, usePnpLocators = false) {
+export async function findDepPkgJsonPath(dep, parent) {
+  return _findDepPkgJsonPath(dep, parent, false);
+}
+
+/**
+ *
+ * @param {string} dep
+ * @param {string} parent
+ * @param {boolean} usePnpWorkspaceLocators
+ * @returns {Promise<undefined|string>}
+ * @private
+ */
+async function _findDepPkgJsonPath(dep, parent, usePnpWorkspaceLocators) {
   if (pnp) {
-    if(usePnpLocators) {
-      // if we're in a workspace and the dep is a workspace dep,
-      // then we'll try to resolve to it's real location
-      const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
-      if (locator) {
-        const pkgPath = pnp.getPackageInformation(locator).packageLocation
-        const resolved = path.resolve(pkgPath, 'package.json')
-        console.log('yarn pnp locator resolved',{resolved,dep,parent})
-        return resolved;
-      }
+    if(usePnpWorkspaceLocators) {
+      try {
+        // if we're in a workspace and the dep is a workspace dep,
+        // then we'll try to resolve to it's real location
+        const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
+        if (locator) {
+          const pkgPath = pnp.getPackageInformation(locator).packageLocation
+          const resolved = path.resolve(pkgPath, 'package.json')
+          console.log('yarn pnp locator resolved', {resolved, dep, parent})
+          return resolved;
+        }
+      } catch {}
     }
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)

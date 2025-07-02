@@ -99,7 +99,6 @@ export declare function crawlFrameworkPkgs(
 export declare function findDepPkgJsonPath(
   dep: string,
   parent: string,
-  usePnpLocators?: boolean
 ): Promise<string | undefined>
 
 /**
