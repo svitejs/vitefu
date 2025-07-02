@@ -195,7 +195,9 @@ export async function findDepPkgJsonPath(dep, parent) {
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)
       if (!depRoot) return undefined
-      return path.join(depRoot, 'package.json')
+      const resolved =  path.join(depRoot, 'package.json')
+      console.log('yarn pnp resolved',{resolved,dep,parent})
+      return resolved;
     } catch {
       return undefined
     }
