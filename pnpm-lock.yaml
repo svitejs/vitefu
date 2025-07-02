@@ -108,6 +108,9 @@ importers:
 
   tests/projects/workspace/packages/workspace-app:
     devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
       '@vitefu/workspace-dep-esm-js-lib':
         specifier: ../workspace-esm-js-lib
         version: link:../workspace-esm-js-lib
@@ -124,10 +127,17 @@ importers:
         specifier: ../workspace-semi-framework-lib
         version: link:../workspace-semi-framework-lib
 
-  tests/projects/workspace/packages/workspace-esm-js-lib: {}
+  tests/projects/workspace/packages/workspace-esm-js-lib:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
 
   tests/projects/workspace/packages/workspace-full-direct-framework-lib:
     devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
       '@vitefu/dep-cjs-js-lib':
         specifier: file:../../../../deps/cjs-js-lib
         version: file:tests/deps/cjs-js-lib
@@ -146,6 +156,9 @@ importers:
 
   tests/projects/workspace/packages/workspace-full-framework-lib:
     devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
       '@vitefu/dep-cjs-js-lib':
         specifier: file:../../../../deps/cjs-js-lib
         version: file:tests/deps/cjs-js-lib
@@ -164,6 +177,9 @@ importers:
 
   tests/projects/workspace/packages/workspace-proxy-framework-lib:
     devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
       '@vitefu/dep-framework':
         specifier: file:../../../../deps/framework
         version: file:tests/deps/framework
