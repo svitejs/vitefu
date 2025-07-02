@@ -11,9 +11,17 @@ import {
 
 /** @type {import('pnpapi')} */
 let pnp
+
+
+/** @type {Array<{ name: string; reference: string; }>} */
+let pnpWorkspaceLocators;
+
 if (process.versions.pnp) {
   try {
     pnp = createRequire(import.meta.url)('pnpapi')
+    // returns a set of physical locators https://yarnpkg.com/advanced/pnpapi#getdependencytreeroots
+    // @ts-expect-error unfortunately doesn't exist in the `@types` package
+    pnpWorkspaceLocators = pnp.getDependencyTreeRoots()
   } catch {}
 }
 
@@ -143,7 +151,7 @@ export async function crawlFrameworkPkgs(options) {
     })
 
     const promises = deps.map(async (dep) => {
-      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath)
+      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath, !!options.workspaceRoot)
       if (!depPkgJsonPath) return
       const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
@@ -190,8 +198,19 @@ export async function crawlFrameworkPkgs(options) {
 }
 
 /** @type {import('./index.d.ts').findDepPkgJsonPath} */
-export async function findDepPkgJsonPath(dep, parent) {
+export async function findDepPkgJsonPath(dep, parent, usePnpLocators = false) {
   if (pnp) {
+    if(usePnpLocators) {
+      // if we're in a workspace and the dep is a workspace dep,
+      // then we'll try to resolve to it's real location
+      const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
+      if (locator) {
+        const pkgPath = pnp.getPackageInformation(locator).packageLocation
+        const resolved = path.resolve(pkgPath, 'package.json')
+        console.log('yarn pnp locator resolved',{resolved,dep,parent})
+        return resolved;
+      }
+    }
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)
       if (!depRoot) return undefined

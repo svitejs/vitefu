@@ -78,6 +78,7 @@ test('crawlFrameworkPkgs (dev + workspaceRoot)', async () => {
         "@vitefu/workspace-dep-proxy-framework-lib"
       ],
       external: [
+        "@types/node",
         "@vitefu/dep-cjs-js-lib",
         "@vitefu/dep-framework",
         "@vitefu/dep-implicit-entry-cjs-lib",

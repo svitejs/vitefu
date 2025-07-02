@@ -7,5 +7,8 @@
     ".": {
       "import": "./index.js"
     }
+  },
+  "devDependencies": {
+    "@types/node": "^14.18.63"
   }
 }
