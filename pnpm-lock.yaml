@@ -100,6 +100,95 @@ importers:
         specifier: ^0.5.6
         version: 0.5.6
 
+  tests/projects/workspace:
+    devDependencies:
+      uvu:
+        specifier: ^0.5.6
+        version: 0.5.6
+
+  tests/projects/workspace/packages/workspace-app:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+      '@vitefu/workspace-dep-esm-js-lib':
+        specifier: ../workspace-esm-js-lib
+        version: link:../workspace-esm-js-lib
+      '@vitefu/workspace-dep-full-direct-framework-lib':
+        specifier: ../workspace-full-direct-framework-lib
+        version: link:../workspace-full-direct-framework-lib
+      '@vitefu/workspace-dep-full-framework-lib':
+        specifier: ../workspace-full-framework-lib
+        version: link:../workspace-full-framework-lib
+      '@vitefu/workspace-dep-proxy-framework-lib':
+        specifier: ../workspace-proxy-framework-lib
+        version: link:../workspace-proxy-framework-lib
+      '@vitefu/workspace-dep-semi-framework-lib':
+        specifier: ../workspace-semi-framework-lib
+        version: link:../workspace-semi-framework-lib
+
+  tests/projects/workspace/packages/workspace-esm-js-lib:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+
+  tests/projects/workspace/packages/workspace-full-direct-framework-lib:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+      '@vitefu/dep-cjs-js-lib':
+        specifier: file:../../../../deps/cjs-js-lib
+        version: file:tests/deps/cjs-js-lib
+      '@vitefu/dep-implicit-entry-cjs-lib':
+        specifier: file:../../../../deps/implicit-entry-cjs-lib
+        version: file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-deep-optimize-lib':
+        specifier: file:../../../../deps/no-deep-optimize-lib
+        version: file:tests/deps/no-deep-optimize-lib
+      '@vitefu/dep-no-entry-lib':
+        specifier: file:../../../../deps/no-entry-lib
+        version: file:tests/deps/no-entry-lib
+      '@vitefu/dep-should-no-external-lib':
+        specifier: file:../../../../deps/should-no-external-lib
+        version: '@vitefu/dep-sshould-no-external-lib@file:tests/deps/should-no-external-lib'
+
+  tests/projects/workspace/packages/workspace-full-framework-lib:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+      '@vitefu/dep-cjs-js-lib':
+        specifier: file:../../../../deps/cjs-js-lib
+        version: file:tests/deps/cjs-js-lib
+      '@vitefu/dep-implicit-entry-cjs-lib':
+        specifier: file:../../../../deps/implicit-entry-cjs-lib
+        version: file:tests/deps/implicit-entry-cjs-lib
+      '@vitefu/dep-no-deep-optimize-lib':
+        specifier: file:../../../../deps/no-deep-optimize-lib
+        version: file:tests/deps/no-deep-optimize-lib
+      '@vitefu/dep-no-entry-lib':
+        specifier: file:../../../../deps/no-entry-lib
+        version: file:tests/deps/no-entry-lib
+      '@vitefu/dep-should-no-external-lib':
+        specifier: file:../../../../deps/should-no-external-lib
+        version: '@vitefu/dep-sshould-no-external-lib@file:tests/deps/should-no-external-lib'
+
+  tests/projects/workspace/packages/workspace-proxy-framework-lib:
+    devDependencies:
+      '@types/node':
+        specifier: ^14.18.63
+        version: 14.18.63
+      '@vitefu/dep-framework':
+        specifier: file:../../../../deps/framework
+        version: file:tests/deps/framework
+      '@vitefu/dep-full-framework-lib':
+        specifier: file:../../../../deps/full-framework-lib
+        version: file:tests/deps/full-framework-lib(@vitefu/dep-framework@file:tests/deps/framework)
+
+  tests/projects/workspace/packages/workspace-semi-framework-lib: {}
+
 packages:
 
   '@esbuild/android-arm@0.15.18':

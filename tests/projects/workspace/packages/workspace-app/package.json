@@ -1,0 +1,14 @@
+{
+  "name": "@vitefu/project-workspace-app",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@vitefu/workspace-dep-full-direct-framework-lib": "../workspace-full-direct-framework-lib",
+    "@vitefu/workspace-dep-full-framework-lib": "../workspace-full-framework-lib",
+    "@vitefu/workspace-dep-semi-framework-lib": "../workspace-semi-framework-lib",
+    "@vitefu/workspace-dep-proxy-framework-lib": "../workspace-proxy-framework-lib",
+    "@vitefu/workspace-dep-esm-js-lib": "../workspace-esm-js-lib",
+    "@types/node": "^14.18.63"
+  }
+}

@@ -11,9 +11,17 @@ import {
 
 /** @type {import('pnpapi')} */
 let pnp
+
+
+/** @type {Array<{ name: string; reference: string; }>} */
+let pnpWorkspaceLocators;
+
 if (process.versions.pnp) {
   try {
     pnp = createRequire(import.meta.url)('pnpapi')
+    // returns a set of physical locators https://yarnpkg.com/advanced/pnpapi#getdependencytreeroots
+    // @ts-expect-error unfortunately doesn't exist in the `@types` package
+    pnpWorkspaceLocators = pnp.getDependencyTreeRoots()
   } catch {}
 }
 
@@ -101,11 +109,11 @@ export async function crawlFrameworkPkgs(options) {
    */
   async function crawl(pkgJsonPath, pkgJson, parentDepNames = []) {
     const isRoot = parentDepNames.length === 0
-
+    const crawlDevDependencies = isRoot || isPrivateWorkspacePackage(pkgJsonPath,pkgJson,options.workspaceRoot)
     /** @type {string[]} */
     let deps = [
       ...Object.keys(pkgJson.dependencies || {}),
-      ...(isRoot ? Object.keys(pkgJson.devDependencies || {}) : [])
+      ...((crawlDevDependencies) ? Object.keys(pkgJson.devDependencies || {}) : [])
     ]
 
     deps = deps.filter((dep) => {
@@ -143,7 +151,7 @@ export async function crawlFrameworkPkgs(options) {
     })
 
     const promises = deps.map(async (dep) => {
-      const depPkgJsonPath = await findDepPkgJsonPath(dep, pkgJsonPath)
+      const depPkgJsonPath = await _findDepPkgJsonPath(dep, pkgJsonPath, !!options.workspaceRoot)
       if (!depPkgJsonPath) return
       const depPkgJson = await readJson(depPkgJsonPath).catch(() => {})
       if (!depPkgJson) return
@@ -188,10 +196,33 @@ export async function crawlFrameworkPkgs(options) {
     await Promise.all(promises)
   }
 }
-
 /** @type {import('./index.d.ts').findDepPkgJsonPath} */
 export async function findDepPkgJsonPath(dep, parent) {
+  return _findDepPkgJsonPath(dep, parent, false);
+}
+
+/**
+ * internal implementation to avoid exposing the usePnpWorkspaceLocators flag
+ *
+ * @param {string} dep
+ * @param {string} parent
+ * @param {boolean} usePnpWorkspaceLocators
+ * @returns {Promise<undefined|string>}
+ * @private
+ */
+async function _findDepPkgJsonPath(dep, parent, usePnpWorkspaceLocators) {
   if (pnp) {
+    if(usePnpWorkspaceLocators) {
+      try {
+        // if we're in a workspace and the dep is a workspace dep,
+        // then we'll try to resolve to it's real location
+        const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
+        if (locator) {
+          const pkgPath = pnp.getPackageInformation(locator).packageLocation
+          return path.resolve(pkgPath, 'package.json')
+        }
+      } catch {}
+    }
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)
       if (!depRoot) return undefined
@@ -265,4 +296,18 @@ export async function pkgNeedsOptimization(pkgJson, pkgJsonPath) {
  */
 async function readJson(findDepPkgJsonPath) {
   return JSON.parse(await fs.readFile(findDepPkgJsonPath, 'utf8'))
+}
+
+/**
+ *
+ * @param {string} pkgJsonPath
+ * @param {Record<string,any>} pkgJson
+ * @param {string} [workspaceRoot]
+ * @returns {boolean}
+ */
+function isPrivateWorkspacePackage(pkgJsonPath,pkgJson,workspaceRoot = undefined) {
+  return !!workspaceRoot
+      && pkgJson.private
+      && pkgJsonPath.startsWith(workspaceRoot)
+      && !pkgJsonPath.match(/[/\\]node_modules[/\\]/)
 }

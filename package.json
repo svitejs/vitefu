@@ -45,6 +45,7 @@
 	},
 	"workspaces": [
 		"tests/deps/*",
-		"tests/projects/*"
+		"tests/projects/*",
+		"tests/projects/workspace/packages/*"
 	]
 }

@@ -1,3 +1,4 @@
 packages:
   - tests/deps/*
   - tests/projects/*
+  - tests/projects/workspace/packages/*

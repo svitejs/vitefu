@@ -3,6 +3,7 @@
 export interface CrawlFrameworkPkgsOptions {
   root: string
   isBuild: boolean
+  workspaceRoot?: string
   viteUserConfig?: any
   isFrameworkPkgByJson?: (pkgJson: Record<string, any>) => boolean
   isFrameworkPkgByName?: (pkgName: string) => boolean | undefined
