@@ -13,7 +13,7 @@ export interface CrawlFrameworkPkgsOptions {
   /**
    * Path to workspace root of the project
    *
-   * setting this enables crawling devDependencies of private packages inside the workspace that
+   * setting this enables crawling devDependencies of private packages inside the workspace
    * you can use `import {searchForWorkspaceRoot} from 'vite'` to find it.
    */
   workspaceRoot?: string
