@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2025-07-03)
+
+- Add workspaceRoot option to `crawlFrameworkPkgs` that enables crawling devDependencies of local workspace **private** packages ([#23](https://github.com/svitejs/vitefu/pull/23))
+
 ## 1.0.7 (2025-06-20)
 
 - Allow Vite 7 peer dependency ([#21](https://github.com/svitejs/vitefu/pull/21))
