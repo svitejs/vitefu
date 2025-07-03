@@ -202,6 +202,7 @@ export async function findDepPkgJsonPath(dep, parent) {
 }
 
 /**
+ * internal implementation to avoid exposing the usePnpWorkspaceLocators flag
  *
  * @param {string} dep
  * @param {string} parent
@@ -218,18 +219,14 @@ async function _findDepPkgJsonPath(dep, parent, usePnpWorkspaceLocators) {
         const locator = pnpWorkspaceLocators.find((root) => root.name === dep)
         if (locator) {
           const pkgPath = pnp.getPackageInformation(locator).packageLocation
-          const resolved = path.resolve(pkgPath, 'package.json')
-          console.log('yarn pnp locator resolved', {resolved, dep, parent})
-          return resolved;
+          return path.resolve(pkgPath, 'package.json')
         }
       } catch {}
     }
     try {
       const depRoot = pnp.resolveToUnqualified(dep, parent)
       if (!depRoot) return undefined
-      const resolved =  path.join(depRoot, 'package.json')
-      console.log('yarn pnp resolved',{resolved,dep,parent})
-      return resolved;
+      return path.join(depRoot, 'package.json')
     } catch {
       return undefined
     }
