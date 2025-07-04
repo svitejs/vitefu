@@ -3,7 +3,9 @@ import { test } from 'uvu'
 import * as assert from 'uvu/assert'
 import {crawlFrameworkPkgs} from '../../../src/index.js'
 
-const workspaceRoot = fileURLToPath(new URL('../../../', import.meta.url)).replace(/\/$/,'')
+const workspaceRoot = fileURLToPath(new URL('../../../', import.meta.url))
+    .replace(/\\/g,'/') // vite's seachForWorkspaceRoot returns slashified string on windows do that here too
+    .replace(/\/$/,'')
 const root = fileURLToPath(new URL('./packages/workspace-app', import.meta.url)).replace(/\/$/,'')
 
 test('crawlFrameworkPkgs (dev)', async () => {

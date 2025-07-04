@@ -306,8 +306,10 @@ async function readJson(findDepPkgJsonPath) {
  * @returns {boolean}
  */
 function isPrivateWorkspacePackage(pkgJsonPath,pkgJson,workspaceRoot = undefined) {
-  return !!workspaceRoot
-      && pkgJson.private
-      && pkgJsonPath.startsWith(workspaceRoot)
-      && !pkgJsonPath.match(/[/\\]node_modules[/\\]/)
+  return !!(
+    workspaceRoot &&
+    pkgJson.private &&
+    !pkgJsonPath.match(/[/\\]node_modules[/\\]/) &&
+    !path.relative(workspaceRoot,pkgJsonPath).startsWith('..')
+  )
 }
