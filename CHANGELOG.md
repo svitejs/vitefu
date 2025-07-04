@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2025-07-04)
+
+- fix: ensure workspaceRoot option works on windows ([#26](https://github.com/svitejs/vitefu/pull/26))
+
 ## 1.1.0 (2025-07-03)
 
 - Add workspaceRoot option to `crawlFrameworkPkgs` that enables crawling devDependencies of local workspace **private** packages ([#23](https://github.com/svitejs/vitefu/pull/23))
