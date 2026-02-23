@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2 (2026-02-23)
+
+- Allow Vite 8 peer dependency ([#28](https://github.com/svitejs/vitefu/pull/28))
+
 ## 1.1.1 (2025-07-04)
 
 - fix: ensure workspaceRoot option works on windows ([#26](https://github.com/svitejs/vitefu/pull/26))
