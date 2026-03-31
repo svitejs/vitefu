@@ -83,6 +83,11 @@ export async function crawlFrameworkPkgs(options) {
       )
     }
   }
+  // ensure result is deterministic after async work
+  optimizeDepsInclude.sort();
+  optimizeDepsExclude.sort();
+  ssrExternal.sort();
+  ssrNoExternal.sort();
 
   return {
     optimizeDeps: {

@@ -75,7 +75,7 @@ test.run()
  * @param {boolean} isBuild
  */
 async function callCrawlFrameworkPkgs(isBuild) {
-  const result = await crawlFrameworkPkgs({
+  return crawlFrameworkPkgs({
     root,
     isBuild,
     viteUserConfig: {
@@ -96,12 +96,6 @@ async function callCrawlFrameworkPkgs(isBuild) {
       )
     }
   })
-  // sort for deep equal comparison
-  result.optimizeDeps.include.sort()
-  result.optimizeDeps.exclude.sort()
-  result.ssr.noExternal.sort()
-  result.ssr.external.sort()
-  return result
 }
 
 /**
