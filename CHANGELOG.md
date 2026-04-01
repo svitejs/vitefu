@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 (2026-04-01)
+
+- Sort result arrays of `crawlFrameworkPkgs` to ensure they are deterministic ([#30](https://github.com/svitejs/vitefu/pull/30))
+- Update Vite 8 peer dependency to stable
+
 ## 1.1.2 (2026-02-23)
 
 - Allow Vite 8 peer dependency ([#28](https://github.com/svitejs/vitefu/pull/28))
